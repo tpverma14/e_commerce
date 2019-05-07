@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categorie ,Sub_Categorie, Product , Size_quantity , Upload_images
+from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Upload_background_image
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 # Register your models here.
@@ -7,7 +7,7 @@ class CategorieAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('categories_name',)}
     list_display = ['categories_name','slug','updated','created']
 
-admin.site.register(Categorie,CategorieAdmin)
+admin.site.register(Category,CategorieAdmin)
 
 
 
@@ -17,7 +17,7 @@ class Sub_CategorieAdmin(admin.ModelAdmin):
     list_display = ['categories','product_name','slug']
 
 
-admin.site.register(Sub_Categorie,Sub_CategorieAdmin)
+admin.site.register(Sub_Category,Sub_CategorieAdmin)
 
 
 def get_picture_preview(obj):
@@ -53,3 +53,28 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product ,ProductAdmin)
+
+
+def get_bgimage_preview(obj):
+
+
+    if obj.pk:
+        return mark_safe('<img src="/media/%s" width="500" height="200" />' % (obj.image)
+        # return mark_safe("""<a href="{src}" target="_blank"><img src="{src}" alt="{title}" style="max-width: 200px; max-height: 200px;" /></a>""".format(
+        #     src=obj.picture.url,
+        #     title=obj.product_id,
+        # )
+        )
+
+    return _("(choose a picture and save and continue editing to see the preview)")
+
+get_bgimage_preview.short_description = _("Picture Preview")
+
+class Upload_bg_imageAdmin(admin.ModelAdmin):
+    model=Upload_background_image
+    extra=3
+    fields = ['name','image', get_bgimage_preview]
+    readonly_fields = [get_bgimage_preview]
+
+
+admin.site.register(Upload_background_image , Upload_bg_imageAdmin)
