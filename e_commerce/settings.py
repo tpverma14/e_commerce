@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "myshop",
     'multiselectfield',
     'django_extensions',
+     'multiupload',
 
 ]
 

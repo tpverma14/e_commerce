@@ -1,8 +1,13 @@
 from django.contrib import admin
-from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Upload_background_image
+from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Banner,Upload_data
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+
+
+
 # Register your models here.
+
+
 class CategorieAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('categories_name',)}
     list_display = ['categories_name','slug','updated','created']
@@ -55,6 +60,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product ,ProductAdmin)
 
 
+
 def get_bgimage_preview(obj):
 
 
@@ -70,11 +76,15 @@ def get_bgimage_preview(obj):
 
 get_bgimage_preview.short_description = _("Picture Preview")
 
-class Upload_bg_imageAdmin(admin.ModelAdmin):
-    model=Upload_background_image
-    extra=3
-    fields = ['name','image', get_bgimage_preview]
+
+
+class Upload_data_Admin(admin.TabularInline):
+    model=Upload_data
+    extra=1
+    fields = ['image', get_bgimage_preview]
     readonly_fields = [get_bgimage_preview]
 
-
-admin.site.register(Upload_background_image , Upload_bg_imageAdmin)
+class Banner_Admin(admin.ModelAdmin):
+    inlines = [Upload_data_Admin]
+    list_display = ['name','created','updated','active']
+admin.site.register(Banner , Banner_Admin)
