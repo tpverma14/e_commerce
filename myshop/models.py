@@ -39,7 +39,7 @@ class Product(models.Model):
 
 class Upload_images(models.Model):
     image_id = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='media/products_image', blank=False)
+    image = models.ImageField(upload_to='products_image', blank=False)
 
 
 
@@ -58,12 +58,16 @@ class Size_quantity(models.Model):
 
 class Banner(models.Model):
     name = models.CharField(max_length=32, blank=False)
-    disscount = models.IntegerField(blank=False)
+    discount = models.IntegerField(blank=False)
     valid_from = models.DateTimeField(blank=False)
     valid_to = models.DateTimeField(blank=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField()
+
+    # @property
+    # def get_active_banners(self):
+    #     return Banner.objects.filter(active=True)
 
     def __str__(self):
         return self.name
