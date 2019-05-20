@@ -834,6 +834,8 @@ opacity: 0;
 position: absolute;
 top: 0;
 transition: all 0.75s ease 0s;
+width:350;
+height:200;
 }
 .hover_images > img {
   width: 100%;

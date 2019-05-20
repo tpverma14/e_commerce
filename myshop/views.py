@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from myshop.models import Category ,Sub_Category ,Banner,Upload_data,Upload_images ,Product
+from django.shortcuts import render , HttpResponse
+from myshop.models import Category ,Sub_Category ,Banner,Upload_data,Upload_images ,Product , Category_banner
 
 def home(request):
     data  = []
@@ -16,7 +16,7 @@ def home(request):
     for banner in banner_data:
         data1.append({'banner_name': banner, 'discount':banner.discount ,'banner_image' : Upload_data.objects.filter(banner__id=banner.id)})
 
-    print(data1)
+
 
     sub_categoryes = Sub_Category.objects.all()
     for demo in sub_categoryes:
@@ -24,11 +24,18 @@ def home(request):
         for pro_data in data11:
             product.append({'categories':demo ,'product': pro_data ,'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
 
-    print(product)
-
-
 
     return render(request,"home.html",{'data':data ,'banner_data':data1,'product':product})
+
+def category(request,post_slug):
+    object=Category.objects.get(slug=post_slug)
+    image_object=Category_banner.objects.filter(category_banner__id=object.id)
+    object1=Sub_Category.objects.filter(categories__id=object.id)
+
+    print(image_object)
+    return render(request,"category-1.html",{'object':object,'object1':object1,'image_object':image_object})
+
+
 
 def login(request):
     return render(request,"login.html")

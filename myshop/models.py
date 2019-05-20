@@ -15,6 +15,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return "%s" % (self.slug)
 
+class Category_banner(models.Model):
+    category_banner=models.ForeignKey(Category,related_name='category_image',on_delete=models.CASCADE)
+    category_image=models.ImageField(upload_to='product_banner',blank=False)
 
 class Sub_Category(models.Model):
     categories = models.ForeignKey(Category, related_name='categories', on_delete=models.CASCADE)

@@ -1,19 +1,41 @@
 from django.contrib import admin
-from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Banner,Upload_data
+from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Banner,Upload_data ,Category_banner
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 
 
 # Register your models here.
+def get_image_preview(obj):
+
+
+    if obj.pk:
+        return mark_safe('<img src="/media/%s" width="150" height="150" />' % (obj.category_image)
+        # return mark_safe("""<a href="{src}" target="_blank"><img src="{src}" alt="{title}" style="max-width: 200px; max-height: 200px;" /></a>""".format(
+        #     src=obj.picture.url,
+        #     title=obj.product_id,
+        # )
+        )
+
+    return _("(choose a picture and save and continue editing to see the preview)")
+
+get_image_preview.short_description = _("Picture Preview")
+
+class Category_bannerAdmin(admin.TabularInline):
+    model = Category_banner
+    extra = 1
+    fields = ['category_image', get_image_preview]
+    readonly_fields = [get_image_preview]
+
+
 
 
 class CategorieAdmin(admin.ModelAdmin):
+
     prepopulated_fields = {'slug':('categories_name',)}
     list_display = ['categories_name','slug','updated','created']
-
+    inlines = [Category_bannerAdmin]
 admin.site.register(Category,CategorieAdmin)
-
 
 
 

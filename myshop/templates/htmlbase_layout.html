@@ -127,7 +127,7 @@
 				{% for item in data %}
 
 
-				  <li><a href="">{{ item.category}}</a>
+				  <li><a href="{% url 'myshop:category' item.category.slug %}">{{ item.category}}</a>
 
 
 					<ul id="sub-menu2">
