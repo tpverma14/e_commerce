@@ -75,6 +75,7 @@ class Size_quantityInline(admin.TabularInline):
     raw_id_fields = ["product"]
 
 class ProductAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug':('brand_name',)}
     list_display = ['product_id','brand_name']
     inlines = [Upload_imagesInline,Size_quantityInline ]
 

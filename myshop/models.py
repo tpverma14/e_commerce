@@ -30,9 +30,11 @@ class Sub_Category(models.Model):
 
 
 class Product(models.Model):
-    product_id = models.ForeignKey(Sub_Category, related_name='product', on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Sub_Category, related_name='product_id', on_delete=models.CASCADE)
     brand_name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
     price = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10000)])
+    discount=models.IntegerField(blank=True,default=0)
     description = models.TextField(max_length=500)
     available = models.BooleanField(default=True)
 
