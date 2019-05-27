@@ -184,25 +184,34 @@
                                                     <div class="size_cart">
                                                         <a href="">Add to cart</a>
                                                     </div>
-                                                    <form action="/like_post" method="POST">
+                                                    <form action="/like" method="POST">
 
                                                         {%csrf_token%}
 
                                                         {% if is_liked %}
 
-                                                        <div class="size_heart">
-                                                            <p><a href="/like"><i class="fa fa-heart-o" style="font-size:24px;color:red"></i></a></p>
-                                                        </div>
+
+                                                        <p>
+                                                            <button type="submit" name="post_id" value="{{ object.id}}"
+                                                                    class="fa fa-heart-o"
+                                                                    style="font-size:24px;color:red"></button>
+                                                        </p>
+
                                                         {% else %}
 
-                                                        <div class="size_heart">
-                                                            <p><a href="/like"<i class="fa fa-heart" style="font-size:24px;color:red"></i></a></p>
-                                                        </div>
+
+                                                        <button type="submit" name="post_id" value="{{ object.id}}"
+                                                                class="fa fa-heart"
+                                                                style="font-size:24px;color:red"></button>
+
+
 
                                                         {% endif %}
                                                     </form>
                                                     <div class="size_heart">
-                                                    <a href=""><img src="{% static 'images/Product-Details-arrow.png' %}" alt=""/></a>
+                                                        <a href=""><img
+                                                                src="{% static 'images/Product-Details-arrow.png' %}"
+                                                                alt=""/></a>
                                                     </div>
 
                                                 </div>
