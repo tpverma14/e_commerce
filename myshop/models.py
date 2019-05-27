@@ -1,5 +1,8 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 
 class Category(models.Model):
@@ -11,9 +14,6 @@ class Category(models.Model):
     def __str__(self):
         return self.categories_name
 
-    @property
-    def get_absolute_url(self):
-        return "%s" % (self.slug)
 
 class Category_banner(models.Model):
     category_banner=models.ForeignKey(Category,related_name='category_image',on_delete=models.CASCADE)
@@ -33,13 +33,20 @@ class Product(models.Model):
     product_id = models.ForeignKey(Sub_Category, related_name='product_id', on_delete=models.CASCADE)
     brand_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
+    title = models.CharField(max_length=100)
     price = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10000)])
-    discount=models.IntegerField(blank=True,default=0)
-    description = models.TextField(max_length=500)
+    discount=models.IntegerField(blank=True,null=True)
+    description = models.TextField(max_length=5000)
+    additional_description = models.TextField(max_length=5000)
+    like = models.ManyToManyField(User, blank=True, related_name='post_like')
     available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.brand_name
+
+    @property
+    def get_absolute_url(self):
+        return "/product_detail/%s/" %(self.slug)
 
 
 class Upload_images(models.Model):
@@ -63,7 +70,7 @@ class Size_quantity(models.Model):
 
 class Banner(models.Model):
     name = models.CharField(max_length=32, blank=False)
-    discount = models.IntegerField(blank=False)
+    discount = models.IntegerField(blank=True,null=True)
     valid_from = models.DateTimeField(blank=False)
     valid_to = models.DateTimeField(blank=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -81,3 +88,8 @@ class Banner(models.Model):
 class Upload_data(models.Model):
     banner = models.ForeignKey(Banner, related_name='banner', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='background_image', blank=False)
+
+
+class Profile(models.Model):
+    user=models.OneToOneField(User,related_name="user", on_delete=models.CASCADE)
+    mobile_number=models.IntegerField(unique=True)

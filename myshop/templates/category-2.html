@@ -43,14 +43,15 @@
 					<div class="main_category_right cat-2">
 						<div class="row">
 							{% for info in data1 %}
-
+                            {% for image in info.image%}
+							{% if forloop.counter == 1%}
 							<div class="col-md-3 col-sm-4 col-xs-12">
 								<div class="main_cat_item">
 									<div class="item">
 										<div class="item-img">
-												{% for image in info.image%}
+
 											<img src={{image.image.url}} alt="" />
-											{% endfor %}
+
 											<div class="tr-add-cart">
 												<ul>
 													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
@@ -65,13 +66,15 @@
 											<span>-{{info.product_discount}}%</span>
 										</div>
 										<div class="item-sub">
-											<a href="{% url 'myshop:product_detail' info.product_slug %}"><h5>{{info.product_name}}</h5></a>
+											<a href="{% url 'myshop:product_details' info.product_slug %}"><h5>{{info.product_title}}</h5></a>
+											<h5>{{info.product_name}}</h5>
 											<p>${{info.product_price}}<span><del>$ 100</del></span></p>
 										</div>
 									</div>
 								</div>
 							</div>
-
+							{% endif %}
+                            {% endfor %}
 						{% endfor %}
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">

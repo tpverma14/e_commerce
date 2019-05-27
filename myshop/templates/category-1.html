@@ -248,12 +248,15 @@
 					<div class="main_category_right">
 						<div class="row">
 							{% for data in data1 %}
+
 							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="main_cat_item">
 									<div class="item">
 										<div class="item-img">
 											{% for data11 in data.image %}
+											{% if forloop.counter == 1%}
 											<img src="{{data11.image.url}}" alt="" />
+											{% endif %}
 											{% endfor %}
 											<div class="tr-add-cart">
 												<ul>
@@ -269,7 +272,8 @@
 											<span>-{{data.product_discount}}%</span>
 										</div>
 										<div class="item-sub">
-											<a href="{% url 'myshop:product_details' data.product_slug %}"><h5>{{data.product_name}}</h5></a>
+											<a href="{% url 'myshop:product_details' data.product_slug %}"><h5>{{data.product_title}}</h5></a>
+											<h5>{{data.product_name}}</h5>
 											<p>${{data.product_price}}<span><del>$ 100</del></span></p>
 										</div>
 								  </div>

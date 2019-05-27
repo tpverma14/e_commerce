@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Banner,Upload_data ,Category_banner
+from .models import Category ,Sub_Category, Product , Size_quantity , Upload_images ,Banner,Upload_data ,Category_banner ,Profile ,User
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
@@ -111,3 +111,29 @@ class Banner_Admin(admin.ModelAdmin):
     inlines = [Upload_data_Admin]
     list_display = ['name','created','updated','active']
 admin.site.register(Banner , Banner_Admin)
+
+
+
+
+class ProfileAdmin(admin.TabularInline):
+    model=Profile
+    fields = ['mobile_number']
+    readonly_fields = ["mobile_number"]
+
+class UserAdmin(admin.ModelAdmin):
+    inlines = [ProfileAdmin]
+    readonly_fields = ['username','email','last_name','password','first_name']
+admin.site.unregister(User)
+admin.site.register(User,UserAdmin)
+
+
+
+
+
+
+
+
+
+
+
+

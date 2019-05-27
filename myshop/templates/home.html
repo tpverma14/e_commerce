@@ -100,6 +100,7 @@
 						<div class="row">
 							{% for data11 in product %}
 							{% for data12 in data11.images %}
+							{% if forloop.counter == 1%}
 							<div class="col-md-6 col-sm-6 col-xs-12">
 
 								<div class="promotion_left">
@@ -112,7 +113,7 @@
 										<div class="promo_text">
 											<h5>{{ data11.categories }}</h5>
 											<div class="p_line"></div>
-											<a href="">Show More Products <i class="fa fa-caret-right"></i></a>
+											<a href="{% url 'myshop:subcategory' data11.slug %}">Show More Products <i class="fa fa-caret-right"></i></a>
 										</div>
 										<div class="hover_images">
 											<img src="{{ data12.image.url  }}" alt="" />
@@ -120,6 +121,7 @@
 									</div>
 								</div>
 							</div>
+							{% endif %}
 								{% endfor%}
 								{% endfor %}
 						</div>

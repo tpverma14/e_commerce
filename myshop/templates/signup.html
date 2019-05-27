@@ -61,34 +61,17 @@
     <div class="header_center">
         <a href="/"><img src="{% static 'images/logo2.png' %}" alt="Site Logo"/></a>
     </div>
-</center>
-<form method="POST" action="/login">
-	{%csrf_token%}
-	<div class="form-group">
-		<div class="col-md-12">
-			<input type="text" class="form-control black" name="username" id="username"
-				   placeholder="Username" required>
-		</div>
 
-	</div>
-	<div class="form-group">
-		<div class="col-md-12">
-			<input type="password" class="form-control black" name="password"
-				   id="inputPass" placeholder="Password" required>
-		</div>
-	</div>
-	<div class="form-group">
-		<div class="col-md-12">
-			<a>
-				<button type="submit" class="btn btn-pink btn-block btn-raised">SUBMIT</button>
-			</a>
-		</div>
-	</div>
+ <form action="/sign_up" method="POST">
+    <div class="login-form" >
+      <center>
+    {%csrf_token%}
+    {{userform.as_p}}
+    {{profileform.as_p}}
+
+    <button class="btn btn-primary"  type="submit">SUBMIT</button>
+    </div>
 </form>
-
-
-
-
-
+</center>
 </body>
 </html>

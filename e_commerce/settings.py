@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'multiselectfield',
     'django_extensions',
      'multiupload',
+    'phonenumber_field',
 
 ]
 
