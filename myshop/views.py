@@ -177,6 +177,6 @@ def like(request):
 
 
 
-        return HttpResponse(post.get_absolute_url)
+        return redirect(post.get_absolute_url)
     else:
         return redirect("myshop:login")
