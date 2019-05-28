@@ -5,7 +5,7 @@ from cart.views import cart
 
 app_name = "cart"
 urlpatterns = [
-    path("",cart,name="cart")
+    path("", cart, name="cart")
 
 
 

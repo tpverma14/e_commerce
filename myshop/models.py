@@ -38,6 +38,7 @@ class Product(models.Model):
     discount=models.IntegerField(blank=True,null=True)
     description = models.TextField(max_length=5000)
     additional_description = models.TextField(max_length=5000)
+    feature_product=models.BooleanField()
     like = models.ManyToManyField(User, blank=True, related_name='post_like')
     available = models.BooleanField(default=True)
 

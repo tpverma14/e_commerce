@@ -1,4 +1,4 @@
-{% extends "myshop/htmlbase_layout.html" %}
+{% extends 'htmlbase_layout.html' %}
 {% load staticfiles %}
 {% load static %}
 {% block content %}
@@ -9,7 +9,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="bread_box">
 					<ul class="breadcumb">
-						<li><a href="index.html">home <span>|</span></a></li>
+						<li><a href="{% url 'myshop:home' %}">home <span>|</span></a></li>
 						<li><a href="">Shop <span>|</span></a></li>
 						<li class="active"><a href="">cart</a></li>
 					</ul>

@@ -76,7 +76,7 @@
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="header_top_right floatright">
-
+{% csrf_token %}
                     {% if user.is_authenticated %}
 
                         <p>{{user.first_name|capfirst}}</p>
@@ -159,17 +159,6 @@
         <div class="nav_center">
             <nav class="mainmenu">
                 <ul id="nav">
-                    <li class="current-page-item"><a href="/">Home</a>
-                        <ul id="sub-menu4">
-                            <li><a href="/">Home Version Two</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/">shop</a>
-                        <ul id="sub-menu7">
-                            <li><a href="product-detail.html">Product Detail Page</a></li>
-                        </ul>
-                    </li>
-
                     <li><a href="/">pages</a>
                         <ul id="sub-menu5">
                             <li><a href="/">Checkout page</a></li>
@@ -184,7 +173,7 @@
             </nav>
         </div>
         <div class="nav_right floatright">
-            <a href="/"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
+            <a href="{% url 'cart:cart' %}"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
             <div class="cart_menu">
                 <div class="cart_items">
                     <div class="c_item_img floatleft">

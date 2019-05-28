@@ -941,218 +941,55 @@
 			</div>
 		</div>
 	</div>
-	<section class="featured_product_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="featured_product_box">
-						<h2>Featured products</h2>
-						<div class="multi_line"></div>
-						<p>Summer Offer! Get Extra Discount Upto 20% For All Collection</p>
+<section class="featured_product_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="featured_product_box">
+					<h2>Featured products</h2>
+					<div class="multi_line"></div>
 
-						<div class="row">
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item12.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>structured collarless coat</h5></a>
-											<p>$90.00</p>
+
+					<div class="row">
+						{% for features in feature %}
+						{% for image in features.image %}
+						{% if forloop.counter == 1%}
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<div class="main_cat_item">
+								<div class="item">
+									<div class="item-img">
+										<img src="{{image.image.url}}" alt=""/>
+										<div class="tr-add-cart">
+											<ul>
+												<li><a class="fa fa-shopping-cart tr_cart"></a></li>
+												<li><a class="tr_text" href="#">ADD TO CART</a></li>
+
+											</ul>
 										</div>
 									</div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item8.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-											<span>-10%</span>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>super Clover Robe Jacket</h5></a>
-											<p>$100.00 <span><del>$110</del></span></p>
-										</div>
-								  </div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item9.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-											<span>-10%</span>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>full hand animal jacket</h5></a>
-											<p>$100.00 <span><del>$110</del></span></p>
-										</div>
-								  </div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item6.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>men’s fashion blue jean coat</h5></a>
-											<p>$80.00</p>
-										</div>
+									<div class="item-new">
+										<p>New</p>
+										<span>-{{features.product_discount}}%</span>
 									</div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item5.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>AROS SLIM HEAVY CHINO</h5></a>
-											<p>$90.00</p>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item6.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-											<span>-10%</span>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>volv checked casual shirt</h5></a>
-											<p>$100.00 <span><del>$110</del></span></p>
-										</div>
-								  </div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item7.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-											<span>-10%</span>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>yellow Clover Robe Jacket</h5></a>
-											<p>$80.00 <span><del>$90</del></span></p>
-										</div>
-								  </div>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-4 col-xs-12">
-								<div class="main_cat_item">
-									<div class="item">
-										<div class="item-img">
-											<img src="{% static 'images/t_item11.jpg' %}" alt="" />
-											<div class="tr-add-cart">
-												<ul>
-													<li><a class="fa fa-shopping-cart tr_cart" href="#"></a></li>
-													<li><a class="tr_text" href="#">ADD TO CART</a></li>
-													<li><a class="fa fa-heart tr_heart" href="#"></a></li>
-													<li><a class="fa fa-search tr_search" href="product-detail.html"></a></li>
-												</ul>
-											</div>
-										</div>
-										<div class="item-new">
-											<p>New</p>
-										</div>
-										<div class="item-sub">
-											<a href="product-detail.html"><h5>houndsmooth wool t-shirt</h5></a>
-											<p>$80.00</p>
-										</div>
+									<div class="item-sub">
+										<a href="{% url 'myshop:product_details' features.product_slug %}"><h5>{{features.product_title}}</h5></a>
+										<a><h5>{{features.product_name}}</h5></a>
+										<p>${{features.product_price}}</p>
 									</div>
 								</div>
 							</div>
 						</div>
+						{%endif%}
+						{%endfor%}
+						{% endfor %}
+
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+
+</section>
 
 
 	<section class="fresh_blog_area">
