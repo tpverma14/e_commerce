@@ -107,6 +107,7 @@
 									<div class="promotion_top">
 
 										<div class="images_box">
+
 											<img src="{{ data12.image.url }}" alt="" width="350" height="250"/>
 										</div>
 
@@ -116,7 +117,7 @@
 											<a href="{% url 'myshop:subcategory' data11.slug %}">Show More Products <i class="fa fa-caret-right"></i></a>
 										</div>
 										<div class="hover_images">
-											<img src="{{ data12.image.url  }}" alt="" />
+											<a href="{% url 'myshop:product_details' data11.product_slug %}" ><img src="{{ data12.image.url  }}" alt="" /></a>
 										</div>
 									</div>
 								</div>

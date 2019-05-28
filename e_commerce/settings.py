@@ -25,7 +25,7 @@ SECRET_KEY = 'xwbvias=7vvitik5m5tdep7nucou!2tt&jo=8hl#tv4-o&@by&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
      'multiupload',
     'phonenumber_field',
+    'cart',
 
 ]
 

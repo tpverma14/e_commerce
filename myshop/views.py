@@ -24,7 +24,7 @@ def home(request):
     for demo in sub_categoryes:
         data11=Product.objects.filter(product_id__id=demo.id)
         for pro_data in data11:
-            product.append({'categories':demo ,'slug':demo.slug,'product': pro_data ,'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
+            product.append({'product_slug':pro_data.slug,'categories':demo ,'slug':demo.slug,'product': pro_data ,'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
 
 
     return render(request,"home.html",{'data':data ,'banner_data':data1,'product':product,'user':request.user})
@@ -165,7 +165,7 @@ def like(request):
     if request.user.is_authenticated:
 
         post=get_object_or_404(Product, id=request.POST.get('post_id'))
-        print(post)
+
 
         is_liked=False
         if post.like.filter(id=request.user.id).exists():

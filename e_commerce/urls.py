@@ -18,7 +18,9 @@ from django.urls import path, include
 from myshop import urls as myshop_url
 from django.conf import settings
 from django.conf.urls.static import static
+from cart import urls as cart_url
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include(myshop_url)),
+    path('cart/',include(cart_url)),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
