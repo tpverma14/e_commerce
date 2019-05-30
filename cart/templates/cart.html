@@ -38,89 +38,50 @@
 							<p>total</p>
 						</div>
 					</div>
+					{% for item in cart%}
+					{% with product=item.product %}
 					<div class="cart_item">
 						<div class="cart_item_img">
-							<img src="images/cart_img1.jpg" alt=""/>
-							<p>blue denim casual <br>shirt</p>
+							{% for object in data.image %}
+							{% if forloop.counter == 1 %}
+							<img src="{{object.image.url}}" alt=""/>
+							{% endif%}
+							{% endfor %}
+
+							<p>{{product.title}}<br>{{product.name}}</p>
 						</div>
 						<div class="cart_price">
-							<p>$90</p>
+							<p>${{item.price}}</p>
 						</div>
 						<div class="cart_quantity">
 							<ul>
-								<li><a href=""><i class="fa fa-minus"></i></a></li>
-								<li><a href="">2</a></li>
-								<li><a href=""><i class="fa fa-plus"></i></a></li>
+								<li><form action="{% url 'cart:cart_add' product.id%}" method="POST">
+								{{item.update_quantity_form.quantity}}
+									{{item.update_quantity_form.update}}
+									<input type="submit" value="Update">
+									{% csrf_token%}
+								</form></li>
+
+								<li><a href="{% url 'cart:cart_remove' product.id %}">Remove</a></li>
 							</ul>
 						</div>
 						<div class="cart_total">
-							<p>$180.00</p>
+							<p>${{item.total_price}}</p>
 							<span><i class="fa fa-close"></i></span>
 						</div>
 					</div>
-					<div class="cart_item">
-						<div class="cart_item_img">
-							<img src="images/cart_img2.jpg" alt=""/>
-							<p>structured collarless <br>coat</p>
-						</div>
-						<div class="cart_price">
-							<p>$80</p>
-						</div>
-						<div class="cart_quantity">
-							<ul>
-								<li><a href=""><i class="fa fa-minus"></i></a></li>
-								<li><a href="">2</a></li>
-								<li><a href=""><i class="fa fa-plus"></i></a></li>
-							</ul>
-						</div>
-						<div class="cart_total">
-							<p>$180.00</p>
-							<span><i class="fa fa-close"></i></span>
-						</div>
-					</div>
-					<div class="cart_item">
-						<div class="cart_item_img">
-							<img src="images/cart_img3.jpg" alt=""/>
-							<p>houndsmooth wool <br>t-shirt</p>
-						</div>
-						<div class="cart_price">
-							<p>$110</p>
-						</div>
-						<div class="cart_quantity">
-							<ul>
-								<li><a href=""><i class="fa fa-minus"></i></a></li>
-								<li><a href="">2</a></li>
-								<li><a href=""><i class="fa fa-plus"></i></a></li>
-							</ul>
-						</div>
-						<div class="cart_total">
-							<p>$180.00</p>
-							<span><i class="fa fa-close"></i></span>
-						</div>
-					</div>
-					<div class="cart_item">
-						<div class="cart_item_img">
-							<img src="images/cart_img4.jpg" alt=""/>
-							<p>men’s fashion blue <br>jean coat</p>
-						</div>
-						<div class="cart_price">
-							<p>$70</p>
-						</div>
-						<div class="cart_quantity">
-							<ul>
-								<li><a href=""><i class="fa fa-minus"></i></a></li>
-								<li><a href="">2</a></li>
-								<li><a href=""><i class="fa fa-plus"></i></a></li>
-							</ul>
-						</div>
-						<div class="cart_total">
-							<p>$180.00</p>
-							<span><i class="fa fa-close"></i></span>
-						</div>
-					</div>
+					{% endwith%}
+					{% endfor %}
+
+
+
 					<div class="coupon_box">
-						<input type="text" placeholder="coupon code"/>
-						<input type="submit" value="apply coupon">
+						<form action="{% url 'coupon:coupon_apply' %}" method="post">
+							{{ coupon_apply_form }}
+							<input type="submit" value="apply coupon">
+							{% csrf_token %}
+						</form>
+
 					</div>
 				</div>
 			</div>

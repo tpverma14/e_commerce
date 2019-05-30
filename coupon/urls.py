@@ -4,7 +4,7 @@ from django.urls import path
 from coupon.views import coupon_apply
 app_name= 'coupon'
 urlpatterns = [
-    path("apply",coupon_apply,name='apply')
+    path("apply",coupon_apply,name='coupon_apply')
 
 
 

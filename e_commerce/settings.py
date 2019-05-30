@@ -26,6 +26,10 @@ SECRET_KEY = 'xwbvias=7vvitik5m5tdep7nucou!2tt&jo=8hl#tv4-o&@by&'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CART_SESSION_ID = 'cart'
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR,'locale/'),
+)
 
 
 # Application definition
@@ -43,7 +47,7 @@ INSTALLED_APPS = [
      'multiupload',
     'phonenumber_field',
     'cart',
-    'coupon'
+    'coupon',
 
 ]
 
@@ -53,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',

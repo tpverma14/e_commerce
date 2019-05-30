@@ -6,7 +6,7 @@ from myshop.models import Category, Sub_Category, Banner, Upload_data, Upload_im
     Size_quantity, Profile
 from myshop.forms import Userform, Profileform
 from django.contrib.auth import logout
-
+from cart.forms import CartAddProductFrom
 
 def home(request):
     data = []
@@ -94,8 +94,10 @@ def product_detail(request, post_slug):
     if object.like.filter(id=request.user.id).exists():
         is_liked = True
 
+    cart_product_form= CartAddProductFrom()
+
     return render(request, "product-detail.html",
-                  {'data': data, 'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object})
+                  {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object})
 
 
 def sign_up(request):

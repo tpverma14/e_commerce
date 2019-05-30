@@ -145,8 +145,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapseThreeP" class="panel-collapse collapse" role="tabpanel"
-                                         aria-labelledby="headingThreeP">
+
                                         <div class="panel-body product_accordion_head">
                                             <div class="single_color sp_single_col">
                                                 <div class="color_heading"><h5>Colors</h5></div>
@@ -174,47 +173,46 @@
                                                 </div>
                                             </div>
                                             <div class="single_color">
-                                                <div class="color_heading"><h5>Quantity</h5></div>
-                                                <div class="color_detail">
-                                                    <div class="size_down">
-                                                        <input type="number" size="4" class="input-text qty text"
-                                                               title="Qty" value="1" name="quantity[113]" max="119"
-                                                               min="0" step="1">
-                                                    </div>
-                                                    <div class="size_cart">
-                                                        <a href="">Add to cart</a>
-                                                    </div>
-                                                    <form action="/like" method="POST">
-                                                        {%csrf_token%}
+
+                                                <form action="{% url 'cart:cart_add' object.id %}" method="POST">
+                                                    {{cart_product_form}}
+                                                    {% csrf_token %}
 
 
-                                                        {% if is_liked %}
+                                                    <input type="submit" value='Add to cart '>
+
+                                                </form>
+                                                <form action="/like" method="POST">
+                                                    {%csrf_token%}
 
 
-                                                        <p>
-                                                            <button type="submit" name="post_id" value="{{ object.id}}"
-                                                                    class="fa fa-heart"
-                                                                    style="font-size:24px;color:red"></button>
-                                                        </p>
-
-                                                        {% else %}
+                                                    {% if is_liked %}
 
 
+                                                    <p>
                                                         <button type="submit" name="post_id" value="{{ object.id}}"
-                                                                class="fa fa-heart-o"
+                                                                class="fa fa-heart"
                                                                 style="font-size:24px;color:red"></button>
+                                                    </p>
+
+                                                    {% else %}
 
 
+                                                    <button type="submit" name="post_id" value="{{ object.id}}"
+                                                            class="fa fa-heart-o"
+                                                            style="font-size:24px;color:red"></button>
 
-                                                        {% endif %}
-                                                    </form>
+
+                                                    {% endif %}
+                                                </form>
 
 
-                                                </div>
                                             </div>
 
-                                        </div>
+
+
                                     </div>
+
                                 </div>
                             </div>
 
@@ -552,3 +550,6 @@
 </section>
 
 {% endblock %}
+
+
+

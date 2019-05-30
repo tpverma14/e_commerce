@@ -76,7 +76,7 @@
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="header_top_right floatright">
-{% csrf_token %}
+
                     {% if user.is_authenticated %}
 
                         <p>{{user.first_name|capfirst}}</p>
@@ -173,15 +173,18 @@
             </nav>
         </div>
         <div class="nav_right floatright">
+
+
             <a href="{% url 'cart:cart_detail' %}"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
             <div class="cart_menu">
+
                 <div class="cart_items">
                     <div class="c_item_img floatleft">
-                        <a href="product-detail.html"><img src="{% static 'images/c_item1.jpg' %}" alt=""/></a>
+                        <a href=""><img src="{% static 'images/c_item1.jpg' %}" alt=""/></a>
                     </div>
                     <div class="c_item_totals floatleft">
                         <div class="c_item_totals_detail floatleft">
-                            <a href="product-detail.html"><h5>men’s fashion blue jean coat</h5></a>
+                            <a href=""><h5>men’s fashion blue jean coat</h5></a>
                             <span>2 x $ 130.00</span>
                         </div>
                         <div class="close_icon_cart floatleft">
@@ -223,111 +226,7 @@
         </div>
 
 
-        <!-- MOBILE ONLY CONTENT -->
-        <div class="only-for-mobile">
-            <ul class="ofm">
-                <li class="m_nav"><i class="fa fa-bars"></i> Navigation</li>
-            </ul>
 
-            <!-- MOBILE MENU -->
-            <div class="mobi-menu">
-                <div id='cssmenu'>
-                    <ul>
-                        <li class='has-sub'>
-                            <a href='index.html'><span>Home</span></a>
-                            <ul class="sub-nav">
-                                <li><a href="index.html"><span>Home 1</span></a></li>
-                                <li><a href="index-2.html"><span>Home 2</span></a></li>
-                            </ul>
-                        </li>
-
-                        <li class='has-sub'>
-                            <a href='category-1.html'><span>category</span></a>
-                            <ul>
-                                <li class='has-sub'>
-                                    <a href="category-1.html">category<i class="fa fa-bars"></i></a>
-
-                                    <ul id="has-sub">
-                                        {% for item in data %}
-
-
-                                        <li><a href="">{{ item.category}}</a>
-
-
-                                            <ul id="">
-                                                {% for sub_categories in item.sub_categories %}
-                                                <li><a href="">{{ sub_categories }}</a></li>
-                                                {% endfor %}
-
-
-                                            </ul>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                <li class="img-nav">
-                                    <div class="container">
-                                        <div class="clearfix"></div>
-                                        <div class="space20"></div>
-                                        <div class="clearfix"></div>
-                                        <div class="row in1">
-                                            <div class="col-md-6">
-                                                <a href="#"><img src="{% static 'images/menu_cat.png' %}"
-                                                                 class="img-responsive" alt=" "></a>
-                                            </div>
-                                            <div class="col-md-6">
-                                            </div>
-                                            <div class="clearfix"></div>
-                                            <div class="space20"></div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                        <div class="space20"></div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href='category-2.html'><span>shop</span></a>
-                        </li>
-                        <li class='has-sub'>
-                            <a href='category-1.html'><span>accessories</span></a>
-                            <ul class="sub-nav">
-                                <li><a href="#"><span>check shirts</span></a></li>
-                                <li><a href="#"><span>denim shirts</span></a></li>
-                                <li><a href="#"><span>long sleeve shirts</span></a></li>
-                                <li><a href="#"><span>plain shirts</span></a></li>
-                                <li><a href="#"><span>printed shirts</span></a></li>
-                                <li><a href="#"><span>short sleeve shirts</span></a></li>
-                                <li><a href="#"><span>shortsleeve denim shirts</span></a></li>
-                            </ul>
-                        </li>
-                        <li class='has-sub'>
-                            <a href='#'><span>pages</span></a>
-                            <ul id="sub-nav">
-                                <li><a href="category-1.html">Category page</a></li>
-                                <li><a href="category-2.html">Category page without filter</a></li>
-                                <li><a href="checkout.html">Checkout page</a></li>
-                                <li><a href="cart.html">Cart page</a></li>
-                                <li><a href="product-detail.html">Product detail page</a></li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="single-blog.html">Blog single</a></li>
-                                <li><a href="contact.html">Contact page</a></li>
-                                <li><a href="404.html">404 page</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href='blog.html'><span>Blog</span></a>
-                        </li>
-                        <li>
-                            <a href='cart.html'><span>cart</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- MOBILE ONLY CONTENT -->
     </div>
 </div>
 
