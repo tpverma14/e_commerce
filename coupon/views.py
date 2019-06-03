@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 
 @require_POST
 def coupon_apply(request):
-    now = timezone.now
+    now = timezone.now()
     form = CouponApplyForm(request.POST)
     if form.is_valid():
         code=form.cleaned_data['code']

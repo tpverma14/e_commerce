@@ -15,7 +15,7 @@ def home(request):
     category = Category.objects.all().order_by('created')
     for category in category:
         data.append({'category': category, 'sub_categories': Sub_Category.objects.filter(categories__id=category.id)})
-        # data[category] = Sub_Categorie.objects.filter(categories__id=category.id
+        # data[category] = Sub_Categorie.objects.filter(categories__id=category.id)
     feature = []
     feature_product = Product.objects.filter(feature_product=True)
     for object in feature_product:
@@ -32,7 +32,7 @@ def home(request):
     for demo in sub_categoryes:
         data11 = Product.objects.filter(product_id__id=demo.id)
         for pro_data in data11:
-            product.append({'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug, 'product': pro_data,
+            product.append({'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug, 'product': pro_data,'discount_price':pro_data.discount_price,
                             'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
 
     return render(request, "home.html", {'data': data, 'banner_data': data1, 'product': product, 'user': request.user,'feature':feature})
@@ -52,7 +52,7 @@ def category(request, post_slug):
         product = Product.objects.filter(product_id__id=info.id)
         for info1 in product:
             data1.append({'product_name': info1.brand_name, 'product_title': info1.title, 'product_price': info1.price,
-                          'product_discount': info1.discount,
+                          'product_discount': info1.discount,'discount_price':info1.discount_price,
                           'product_slug': info1.slug, 'image': Upload_images.objects.filter(image_id__id=info1.id)})
 
     return render(request, "category-1.html",
@@ -71,7 +71,7 @@ def subcategory(request, post_slug):
     object1 = Product.objects.filter(product_id__id=object.id)
     for info in object1:
         data1.append({'product_name': info.brand_name, 'product_price': info.price, 'product_title': info.title,
-                      'product_slug': info.slug, 'product_discount': info.discount,
+                      'product_slug': info.slug, 'product_discount': info.discount,'discount_price':info.discount_price,
                       'image': Upload_images.objects.filter(image_id__id=info.id)})
 
     return render(request, "category-2.html", {'data': data, 'data1': data1, 'object1': object1, 'user': request.user})
@@ -86,7 +86,7 @@ def product_detail(request, post_slug):
     data1 = []
     object = Product.objects.get(slug=post_slug)
     data1.append({'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
-                  'product_title': object.title, 'additional_description': object.additional_description,
+                  'product_title': object.title, 'additional_description': object.additional_description,'discount_price':object.discount_price,
                   'product_size': Size_quantity.objects.filter(product__id=object.id),
                   'product_description': object.description,
                   'image': Upload_images.objects.filter(image_id__id=object.id)})
@@ -95,6 +95,8 @@ def product_detail(request, post_slug):
         is_liked = True
 
     cart_product_form= CartAddProductFrom()
+
+
 
     return render(request, "product-detail.html",
                   {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object})

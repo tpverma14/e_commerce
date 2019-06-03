@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from myshop.models import Product
+from myshop.models import Product,Upload_images
 from coupon.models import Coupon
 
 
@@ -10,6 +10,7 @@ class Cart(object):
         cart initialise
         """
         self.session = request.session
+
         cart = self.session.get(settings.CART_SESSION_ID)
         self.coupon_id = self.session.get('coupon_id')
 
@@ -18,6 +19,7 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
 
         self.cart = cart
+        print(self.cart)
 
     @property
     def coupon(self):
@@ -26,7 +28,12 @@ class Cart(object):
         return None
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        for object in self.cart.values():
+            new_price=object['discount_price']
+        if(new_price == 0):
+            return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        else:
+            return sum(Decimal(item['discount_price']) * item['quantity'] for item in self.cart.values())
 
 
     def get_discount(self):
@@ -45,7 +52,7 @@ class Cart(object):
         product_id = str(product.id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+            self.cart[product_id] = {'quantity': 0, 'price': str(product.price),'discount_price':str(product.discount_price)}
 
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
@@ -79,9 +86,17 @@ class Cart(object):
             self.cart[str(product.id)]['product'] = product
 
         for item in self.cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
-            yield item
+            if(item['discount_price'] == 0):
+
+                item['price'] = Decimal(item['price'])
+                item['total_price'] = item['price'] * item['quantity']
+                yield item
+
+            else:
+                item['discount_price'] = Decimal(item['discount_price'])
+                item['total_price'] = item['discount_price'] * item['quantity']
+                yield item
+
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())

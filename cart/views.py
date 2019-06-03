@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from myshop.models import Product ,Upload_images
+from myshop.models import Product ,Upload_images ,Category,Sub_Category
 from .cart import Cart
 from .forms import CartAddProductFrom
 from coupon.forms import CouponApplyForm
@@ -13,7 +13,7 @@ def cart_add(request, product_id):
     cart = Cart(request)
 
     product = get_object_or_404(Product, id=product_id)
-    image=Upload_images.objects.filter(image_id__id=product.id)
+
 
     form = CartAddProductFrom(request.POST)
 
@@ -34,6 +34,7 @@ def cart_remove(request, product_id):
 
 def cart_detail(request):
     cart = Cart(request)
+    data1=[]
     data=[]
     for item in cart:
         item['update_quantity_form'] = CartAddProductFrom(initial={'quantity': item['quantity'], 'update': True})
@@ -41,8 +42,15 @@ def cart_detail(request):
 
     for item1 in cart:
         objects=item1['product']
-        data.append({'image':Upload_images.objects.filter(image_id__id=objects.id)})
+        data1.append({objects :Upload_images.objects.filter(image_id__id=objects.id)})
+
+
+    category = Category.objects.all().order_by('created')
+    for category in category:
+        data.append({'category': category, 'sub_categories': Sub_Category.objects.filter(categories__id=category.id)})
+    user=request.user
+
 
 
     return render(request, 'cart.html', {'cart': cart,
-                                                'coupon_apply_form': coupon_apply_form,'data':data})
+                                                'coupon_apply_form': coupon_apply_form,'data1':data1,'data':data,'user':user})

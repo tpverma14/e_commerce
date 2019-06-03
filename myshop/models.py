@@ -45,6 +45,19 @@ class Product(models.Model):
     def __str__(self):
         return self.brand_name
 
+
+    @property
+    def discount_price(self):
+        if self.discount:
+             sub_total = (self.discount * self.price) / 100
+             total_price = self.price - sub_total
+             return total_price
+        return 0
+
+
+
+
+
     @property
     def get_absolute_url(self):
         return "/product_detail/%s/" %(self.slug)

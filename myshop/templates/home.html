@@ -941,6 +941,7 @@
 			</div>
 		</div>
 	</div>
+
 <section class="featured_product_area">
 	<div class="container">
 		<div class="row">
@@ -952,8 +953,11 @@
 
 					<div class="row">
 						{% for features in feature %}
+						<h1>{{features.image}}</h1>
 						{% for image in features.image %}
+
 						{% if forloop.counter == 1%}
+						{{image}}
 						<div class="col-md-3 col-sm-4 col-xs-12">
 							<div class="main_cat_item">
 								<div class="item">
@@ -969,7 +973,9 @@
 									</div>
 									<div class="item-new">
 										<p>New</p>
+										{% if features.product_discount != None %}
 										<span>-{{features.product_discount}}%</span>
+										{% endif %}
 									</div>
 									<div class="item-sub">
 										<a href="{% url 'myshop:product_details' features.product_slug %}"><h5>{{features.product_title}}</h5></a>
@@ -981,7 +987,8 @@
 						</div>
 						{%endif%}
 						{%endfor%}
-						{% endfor %}
+						{%endfor%}
+
 
 					</div>
 				</div>

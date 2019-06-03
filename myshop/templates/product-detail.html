@@ -4,22 +4,6 @@
 {% block content %}
 
 
-<div class="breadcumb_area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="bread_box">
-                    <ul class="breadcumb">
-                        <li><a href="index.html">home <span>|</span></a></li>
-                        <li><a href="cart.html">shop <span>|</span></a></li>
-                        <li><a href="category-1.html">mens <span>|</span></a></li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 {% for info in data1 %}
 <section class="gray_tshirt_area">
@@ -97,10 +81,15 @@
                             <div class="product_detail_heading">
                                 <div class="detail_heading_left">
                                     <h3>{{info.product_title}}</h3>
-                                    <div class="old_price_gray"><p> {{info.product_product_price}} </p></div>
+                                    {% if info.discount_price == 0 %}
+                                    <div class="old_price_gray"><p> ${{info.product_price}} </p></div>
+
+                                    {% else %}
+                                    <div class="old_price_gray"><p> ${{info.discount_price}} </p></div>
                                     <div class="new_price_gray">
-                                        <del> $100.30</del>
+                                        <del> ${{info.product_price}}</del>
                                     </div>
+                                    {% endif %}
                                 </div>
                                 <div class="detail_heading_right">
                                     <ul id="detail_star">
