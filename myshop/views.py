@@ -20,7 +20,7 @@ def home(request):
     feature_product = Product.objects.filter(feature_product=True)
     for object in feature_product:
         feature.append(
-            {'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
+            {'product_id':object.id ,'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
              'product_title': object.title, 'product_slug': object.slug,'image': Upload_images.objects.filter(image_id__id=object.id)})
 
     banner_data = Banner.objects.filter(active=True)
@@ -32,8 +32,11 @@ def home(request):
     for demo in sub_categoryes:
         data11 = Product.objects.filter(product_id__id=demo.id)
         for pro_data in data11:
-            product.append({'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug, 'product': pro_data,'discount_price':pro_data.discount_price,
+            product.append({'product_id':pro_data.id ,'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug,
+                            'product': pro_data,'discount_price':pro_data.discount_price,
                             'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
+
+
 
     return render(request, "home.html", {'data': data, 'banner_data': data1, 'product': product, 'user': request.user,'feature':feature})
 
@@ -51,7 +54,7 @@ def category(request, post_slug):
     for info in object1:
         product = Product.objects.filter(product_id__id=info.id)
         for info1 in product:
-            data1.append({'product_name': info1.brand_name, 'product_title': info1.title, 'product_price': info1.price,
+            data1.append({'product_id':info1.id ,'product_name': info1.brand_name, 'product_title': info1.title, 'product_price': info1.price,
                           'product_discount': info1.discount,'discount_price':info1.discount_price,
                           'product_slug': info1.slug, 'image': Upload_images.objects.filter(image_id__id=info1.id)})
 
@@ -70,7 +73,7 @@ def subcategory(request, post_slug):
     object = Sub_Category.objects.get(slug=post_slug)
     object1 = Product.objects.filter(product_id__id=object.id)
     for info in object1:
-        data1.append({'product_name': info.brand_name, 'product_price': info.price, 'product_title': info.title,
+        data1.append({'product_id':info.id ,'product_name': info.brand_name, 'product_price': info.price, 'product_title': info.title,
                       'product_slug': info.slug, 'product_discount': info.discount,'discount_price':info.discount_price,
                       'image': Upload_images.objects.filter(image_id__id=info.id)})
 
@@ -85,7 +88,7 @@ def product_detail(request, post_slug):
 
     data1 = []
     object = Product.objects.get(slug=post_slug)
-    data1.append({'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
+    data1.append({'product_id':object.id ,'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
                   'product_title': object.title, 'additional_description': object.additional_description,'discount_price':object.discount_price,
                   'product_size': Size_quantity.objects.filter(product__id=object.id),
                   'product_description': object.description,

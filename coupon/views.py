@@ -20,3 +20,8 @@ def coupon_apply(request):
             request.session['coupon_id']= None
 
     return redirect('cart:cart_detail')
+
+def coupon_remove(request):
+    request.session['coupon_id'] = None
+    return redirect('cart:cart_detail')
+

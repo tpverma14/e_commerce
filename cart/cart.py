@@ -19,7 +19,7 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
 
         self.cart = cart
-        print(self.cart)
+
 
     @property
     def coupon(self):
@@ -27,13 +27,6 @@ class Cart(object):
             return Coupon.objects.get(id=self.coupon_id)
         return None
 
-    def get_total_price(self):
-        for object in self.cart.values():
-            new_price=object['discount_price']
-        if(new_price == 0):
-            return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
-        else:
-            return sum(Decimal(item['discount_price']) * item['quantity'] for item in self.cart.values())
 
 
     def get_discount(self):
@@ -49,10 +42,20 @@ class Cart(object):
         """
         add product to cart or update its quantity
         """
+
+        c = 0
+        images = Upload_images.objects.filter(image_id__id=product.id)
+        for i in images:
+            if (c == 0):
+                image=i.image.url
+                c = c + 1
+
+
         product_id = str(product.id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price),'discount_price':str(product.discount_price)}
+            self.cart[product_id] = {'quantity': 0, 'price': str(product.price),'discount_price':str(product.discount_price),
+                                     'image':image}
 
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
@@ -100,6 +103,18 @@ class Cart(object):
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
+
+    def get_total_price(self):
+
+
+        for item in self.cart.values():
+            if (item['discount_price'] == 0):
+                price=Decimal(item['price'])
+            else:
+                price=Decimal(item['discount_price'])
+
+        return sum( price * item['quantity'] for item in self.cart.values())
+
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]

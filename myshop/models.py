@@ -68,7 +68,6 @@ class Upload_images(models.Model):
     image = models.ImageField(upload_to='products_image', blank=False)
 
 
-
 class Size_quantity(models.Model):
     CATEGORIES_CHOICES = (
         ('XS', 'Extra Small'),

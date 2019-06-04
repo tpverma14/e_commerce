@@ -61,6 +61,7 @@
     <!--[if lt IE 9]>
     <script src="{% static 'https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js' %}"></script>
     <script src="{% static 'https://oss.maxcdn.com/respond/1.4.2/respond.min.js' %}"></script>
+
     <![endif]-->
 </head>
 <body>
@@ -164,57 +165,52 @@
 				</ul>
 			</nav>
 		</div>
+
         <div class="nav_right floatright">
-
-
             <a href="{% url 'cart:cart_detail' %}"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
+            {% with total_items=cart|length %}
+                {% if total_items > 0 %}
             <div class="cart_menu">
+                {% for item in cart%}
+        {% with product=item.product %}
+                <div class="cart_items">
+                    <div class="c_item_img floatleft">
+                        <a href="{% url 'myshop:product_details' product.slug %}">
+										<img src="{{item.image}}" alt="" height="20" width="80" /></a>
+                    </div>
+                    <div class="c_item_totals floatleft">
+                        <div class="c_item_totals_detail floatleft">
+                            <a href=" {% url 'myshop:product_details' product.slug %}"><h5>{{product.title}}<br>{{product}}</h5></a>
+                            <span>${{item.total_price}}</span>
+                        </div>
+                        <div class="close_icon_cart floatleft">
 
-                <div class="cart_items">
-                    <div class="c_item_img floatleft">
-                        <a href=""><img src="{% static 'images/c_item1.jpg' %}" alt=""/></a>
-                    </div>
-                    <div class="c_item_totals floatleft">
-                        <div class="c_item_totals_detail floatleft">
-                            <a href=""><h5>men’s fashion blue jean coat</h5></a>
-                            <span>2 x $ 130.00</span>
-                        </div>
-                        <div class="close_icon_cart floatleft">
-                            <img src="{%static 'images/close.png' %}" alt=""/>
+                          <a href="{% url 'cart:cart_remove' product.id %}"><img src="{%static 'images/close.png' %}" alt=""/></a>
                         </div>
                     </div>
                 </div>
-                <div class="cart_items">
-                    <div class="c_item_img floatleft">
-                        <a href="product-detail.html"><img src="{% static 'images/c_item2.jpg' %}" alt=""/></a>
-                    </div>
-                    <div class="c_item_totals floatleft">
-                        <div class="c_item_totals_detail floatleft">
-                            <a href="product-detail.html"><h5>men’s fashion blue jean coat</h5></a>
-                            <span>2 x $ 130.00</span>
-                        </div>
-                        <div class="close_icon_cart floatleft">
-                            <img src="{% static 'images/close.png' %}" alt=""/>
-                        </div>
-                    </div>
-                </div>
+                    {% endwith%}
+         {% endfor %}
+
                 <div class="cart_totals">
-                    <div class="c_totals_left floatleft">
-                        <p>Free shipping</p>
-                    </div>
+
                     <div class="c_totals_right floatleft">
-                        <p>total $350</p>
+                        <p>${{cart.get_total_price }}</p>
                     </div>
                 </div>
+
                 <div class="cart_view_bottom">
                     <div class="c_totals_left floatleft">
-                        <a href="cart.html">View Cart</a>
+                        <a  href="{% url 'cart:cart_detail' %}">View Cart</a>
                     </div>
                     <div class="c_totals_right floatleft">
-                        <a href="checkout.html">Check Out</a>
+                        <a href="{% url 'cart:checkout' %}">Check Out</a>
                     </div>
                 </div>
+
             </div>
+            {% endif %}
+            {% endwith %}
         </div>
 
 
