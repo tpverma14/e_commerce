@@ -1,7 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
-from phonenumber_field.modelfields import PhoneNumberField
+
 
 
 
@@ -55,7 +55,7 @@ class Product(models.Model):
         return 0
 
 
-
+    
 
 
     @property
@@ -106,3 +106,4 @@ class Upload_data(models.Model):
 class Profile(models.Model):
     user=models.OneToOneField(User,related_name="user", on_delete=models.CASCADE)
     mobile_number=models.IntegerField(unique=True)
+

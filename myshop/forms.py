@@ -3,6 +3,7 @@ from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from myshop.models import Profile
 
+
 class Userform(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter UserName'}),
                                required=True, max_length=30)

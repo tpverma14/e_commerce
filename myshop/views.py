@@ -101,8 +101,12 @@ def product_detail(request, post_slug):
 
 
 
+
+
+
+
     return render(request, "product-detail.html",
-                  {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object})
+                  {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object })
 
 
 def sign_up(request):
