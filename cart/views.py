@@ -1,10 +1,12 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from myshop.models import Product, Upload_images, Category, Sub_Category, Size_quantity
 from .cart import Cart
-from .forms import CartAddProductFrom
+from .forms import CartAddProductFrom ,Checkout_form
 from coupon.forms import CouponApplyForm
 from coupon.models import Coupon
+from .models import Checkout ,Oder_item
 
 
 
@@ -52,6 +54,7 @@ def cart_detail(request):
     m = len(cart)
     if m == 0:
         return redirect('myshop:home')
+
     for item in cart:
         item['update_quantity_form'] = CartAddProductFrom(initial={'quantity': item['quantity'], 'update': True})
         coupon_apply_form = CouponApplyForm()
@@ -84,4 +87,44 @@ def coupon_avaliable(request):
 
 
 def checkout(request):
-    return render(request,'checkout.html')
+    cart = Cart(request)
+    for item in cart:
+        print(item)
+
+    if (request.method == 'POST'):
+        checkout = Checkout_form(request.POST)
+        if checkout.is_valid():
+            country =checkout.cleaned_data['country']
+            first_name =checkout.cleaned_data['first_name']
+            last_name =checkout.cleaned_data['last_name']
+
+            address =checkout.cleaned_data['address']
+            email =checkout.cleaned_data['email']
+            postal_code =checkout.cleaned_data['postal_code']
+            city =checkout.cleaned_data['city']
+            phone =checkout.cleaned_data['phone']
+            other_notes =checkout.cleaned_data['other_notes']
+            object=Checkout.objects.create(country=country,first_name=first_name,last_name=last_name,address=address,email=email,postal_code=postal_code,city=city
+                                           ,phone=phone,other_notes= other_notes)
+            order=object.save()
+
+            for item in cart:
+                if item['discount_price'] == 0:
+                    print("hhjhkjhgjh")
+                    object1=Oder_item.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])
+                    object1.save()
+                else:
+                    print("jiuhiughiugi")
+                    object2=Oder_item.objects.create(order=order, product=item['product'], price=item['discount_price'],
+                                             quantity=item['quantity'])
+                    object2.save()
+            cart.clear()
+            return redirect("/")
+    else:
+        checkout1 = Checkout_form()
+        return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart})
+
+@staff_member_required
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(checkout,id=order_id)
+    return render(request, 'detail.html', {'order': order})
