@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -51,13 +53,18 @@ def cart_detail(request):
     cart = Cart(request)
     data1=[]
     data=[]
+
+
     m = len(cart)
     if m == 0:
         return redirect('myshop:home')
 
     for item in cart:
         item['update_quantity_form'] = CartAddProductFrom(initial={'quantity': item['quantity'], 'update': True})
+
+
         coupon_apply_form = CouponApplyForm()
+
 
     for item1 in cart:
         objects=item1['product']
@@ -88,12 +95,13 @@ def coupon_avaliable(request):
 
 def checkout(request):
     cart = Cart(request)
-    for item in cart:
-        print(item)
+
 
     if (request.method == 'POST'):
+
         checkout = Checkout_form(request.POST)
         if checkout.is_valid():
+
             country =checkout.cleaned_data['country']
             first_name =checkout.cleaned_data['first_name']
             last_name =checkout.cleaned_data['last_name']
@@ -106,16 +114,23 @@ def checkout(request):
             other_notes =checkout.cleaned_data['other_notes']
             object=Checkout.objects.create(country=country,first_name=first_name,last_name=last_name,address=address,email=email,postal_code=postal_code,city=city
                                            ,phone=phone,other_notes= other_notes)
-            order=object.save()
+
+            object.save()
+
 
             for item in cart:
-                if item['discount_price'] == 0:
-                    print("hhjhkjhgjh")
-                    object1=Oder_item.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])
+                print(item)
+                discount = Decimal(item['discount_price'])
+
+                if (discount == 0):
+
+
+                    object1=Oder_item.objects.create(order=object,product=item['product'],price=item['price'],quantity=item['quantity'])
+
                     object1.save()
                 else:
-                    print("jiuhiughiugi")
-                    object2=Oder_item.objects.create(order=order, product=item['product'], price=item['discount_price'],
+
+                    object2=Oder_item.objects.create(order=object, product=item['product'], price=item['discount_price'],
                                              quantity=item['quantity'])
                     object2.save()
             cart.clear()
@@ -125,6 +140,8 @@ def checkout(request):
         return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart})
 
 @staff_member_required
-def admin_order_detail(request, order_id):
-    order = get_object_or_404(checkout,id=order_id)
+def admin_order_detail(request, product_id):
+    print("hello")
+    order = get_object_or_404(Checkout,id=product_id)
+    print(order)
     return render(request, 'detail.html', {'order': order})

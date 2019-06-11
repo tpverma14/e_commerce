@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from myshop.models import Product,Upload_images
+from myshop.models import Product, Upload_images
 from coupon.models import Coupon
 
 
@@ -20,14 +20,11 @@ class Cart(object):
 
         self.cart = cart
 
-
     @property
     def coupon(self):
         if self.coupon_id:
             return Coupon.objects.get(id=self.coupon_id)
         return None
-
-
 
     def get_discount(self):
         if self.coupon:
@@ -47,15 +44,15 @@ class Cart(object):
         images = Upload_images.objects.filter(image_id__id=product.id)
         for i in images:
             if (c == 0):
-                image=i.image.url
+                image = i.image.url
                 c = c + 1
-
 
         product_id = str(product.id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price),'discount_price':str(product.discount_price),
-                                     'image':image}
+            self.cart[product_id] = {'quantity': 0, 'price': str(product.price),
+                                     'discount_price': str(product.discount_price),
+                                     'image': image}
 
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
@@ -89,32 +86,46 @@ class Cart(object):
             self.cart[str(product.id)]['product'] = product
 
         for item in self.cart.values():
-            if(item['discount_price'] == 0):
+
+            discount = Decimal(item['discount_price'])
+
+            if (discount == 0):
 
                 item['price'] = Decimal(item['price'])
                 item['total_price'] = item['price'] * item['quantity']
+
                 yield item
+
 
             else:
+
                 item['discount_price'] = Decimal(item['discount_price'])
                 item['total_price'] = item['discount_price'] * item['quantity']
-                yield item
 
+                yield item
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
-
-
+        sum3 = 0
+        sum4 = 0
         for item in self.cart.values():
-            if (item['discount_price'] == 0):
-                price=Decimal(item['price'])
+            discount = Decimal(item['discount_price'])
+            if (discount == 0):
+                price1 = Decimal(item['price'])
+                sum1 = price1 * item['quantity']
+                sum3 = sum1 + sum3
+
+
             else:
-                price=Decimal(item['discount_price'])
+                price2 = Decimal(item['discount_price'])
+                sum2 = price2 * item['quantity']
+                sum4 = sum2 + sum4
 
-        return sum( price * item['quantity'] for item in self.cart.values())
+        object = sum3 + sum4
 
+        return object
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]

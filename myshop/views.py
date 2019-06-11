@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
+from django.urls import reverse
+
 from myshop.models import Category, Sub_Category, Banner, Upload_data, Upload_images, Product, Category_banner, \
     Size_quantity, Profile
 from myshop.forms import Userform, Profileform
@@ -21,7 +23,7 @@ def home(request):
     for object in feature_product:
         feature.append(
             {'product_id':object.id ,'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
-             'product_title': object.title, 'product_slug': object.slug,'image': Upload_images.objects.filter(image_id__id=object.id)})
+             'discount_price':object.discount_price,'product_title': object.title, 'product_slug': object.slug,'image': Upload_images.objects.filter(image_id__id=object.id)})
 
     banner_data = Banner.objects.filter(active=True)
     for banner in banner_data:
@@ -156,7 +158,7 @@ def log_in(request):
                 return redirect("/")
             else:
 
-                return HttpResponse("<h1> INVALID </h1>")
+                return HttpResponse("<center><h1> INVALID </h1> <br> <br> <h2><a href='/login'> Try Login Again </a></h2> <br> <br> <h2><a href='/sign_up'> Go For Signup </a></h2></center> ")
         else:
 
             user = authenticate(username=username, password=password)
@@ -165,7 +167,7 @@ def log_in(request):
                 auth_login(request, user)
                 return redirect("/")
             else:
-                return HttpResponse("<h1> INVALID </h1>")
+                return HttpResponse("<center><h1> INVALID </h1> <br> <br> <h2><a href='/login'> Try Login Again </a></h2> <br> <br> <h2><a href='/sign_up'> Go For Signup </a></h2></center> ")
     else:
 
         return render(request, "login.html")

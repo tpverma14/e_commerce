@@ -55,13 +55,24 @@
 
 										</div>
 										<div class="item-new">
-											<p>New</p>
-											<span>-{{info.product_discount}}%</span>
-										</div>
+										<p>New</p>
+										{% if info.product_discount != None %}
+										<span>-{{info.product_discount}}%</span>
+										{% endif %}
+									</div>
 										<div class="item-sub">
 											<a href="{% url 'myshop:product_details' info.product_slug %}"><h5>{{info.product_title}}</h5></a>
 											<h5>{{info.product_name}}</h5>
-											<p>${{info.product_price}}<span><del>$ 100</del></span></p>
+											{% if info.discount_price ==  0 %}
+
+											<p>${{info.product_price}}</p>
+
+											{% else %}
+
+											<p>${{info.discount_price }}</p><span><del>${{info.product_price}}</del></span>
+
+											{% endif %}
+
 										</div>
 									</div>
 								</div>

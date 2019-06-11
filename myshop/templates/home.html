@@ -162,10 +162,19 @@
 										<span>-{{features.product_discount}}%</span>
 										{% endif %}
 									</div>
+
 									<div class="item-sub">
 										<a href="{% url 'myshop:product_details' features.product_slug %}"><h5>{{features.product_title}}</h5></a>
 										<a><h5>{{features.product_name}}</h5></a>
-										<p>${{features.product_price}}</p>
+										{% if features.discount_price ==  0 %}
+
+											<p>${{features.product_price}}</p>
+
+											{% else %}
+
+											<p>${{features.discount_price }}</p><span><del>${{features.product_price}}</del></span>
+
+											{% endif %}
 									</div>
 								</div>
 							</div>

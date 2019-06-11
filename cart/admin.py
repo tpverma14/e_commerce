@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.urls import reverse
-
+from django.utils.safestring import mark_safe
 from .models import Checkout, Oder_item
 
 
 
 
 def order_detail(obj):
-    return '<a href="{}">View</a>'.format(reverse('cart:admin_order_detail', args=[obj.id]))
+    return mark_safe('<a href="{}">View</a>'.format(reverse('cart:admin_order_detail', args=[obj.id])))
 order_detail.allow_tags = True
 
 

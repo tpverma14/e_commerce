@@ -261,13 +261,23 @@
 
 										</div>
 										<div class="item-new">
-											<p>New</p>
-											<span>-{{data.product_discount}}%</span>
-										</div>
+										<p>New</p>
+										{% if data.product_discount != None %}
+										<span>-{{data.product_discount}}%</span>
+										{% endif %}
+									</div>
 										<div class="item-sub">
 											<a href="{% url 'myshop:product_details' data.product_slug %}"><h5>{{data.product_title}}</h5></a>
 											<h5>{{data.product_name}}</h5>
-											<p>${{data.product_price}}<span><del>$ 100</del></span></p>
+											{% if data.discount_price ==  0 %}
+
+											<p>${{data.product_price}}</p>
+
+											{% else %}
+
+											<p>${{data.discount_price }}</p><span><del>${{data.product_price}}</del></span>
+
+											{% endif %}
 										</div>
 								  </div>
 								</div>

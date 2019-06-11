@@ -82,9 +82,10 @@
                                 <div class="detail_heading_left">
                                     <h3>{{info.product_title}}</h3>
                                     {% if info.discount_price == 0 %}
-                                    <div class="old_price_gray"><p> ${{info.product_price}} </p></div>
+                                    <div class="old_price_gray"><p> ${{info.product_price}}</p></div>
 
                                     {% else %}
+
                                     <div class="old_price_gray"><p> ${{info.discount_price}} </p></div>
                                     <div class="new_price_gray">
                                         <del> ${{info.product_price}}</del>

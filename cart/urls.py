@@ -4,6 +4,7 @@ from django.urls import path
 from cart.views import cart_add,cart_detail,cart_remove , coupon_avaliable , checkout ,admin_order_detail
 
 app_name = "cart"
+
 urlpatterns = [
     path("",cart_detail, name="cart_detail"),
     path("add/<slug:product_id>/",cart_add,name='cart_add'),

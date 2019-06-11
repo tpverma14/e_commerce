@@ -27,6 +27,7 @@
 						</div>
 					</div>
 					{% for item in cart%}
+
 					{% with product=item.product %}
 
 					<div class="cart_item">
@@ -37,7 +38,9 @@
 							<p>{{product.title}}<br>{{product}}</p>
 						</div>
 						<div class="cart_price">
-							{% if item.discount_price == 0 %}
+
+
+							{% if item.discount_price == '0' %}
 							<p>${{item.price}}</p>
 							{% else %}
 							<p>${{item.discount_price}}</p>
