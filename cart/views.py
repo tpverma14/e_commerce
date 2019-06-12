@@ -112,14 +112,22 @@ def checkout(request):
             city =checkout.cleaned_data['city']
             phone =checkout.cleaned_data['phone']
             other_notes =checkout.cleaned_data['other_notes']
-            object=Checkout.objects.create(country=country,first_name=first_name,last_name=last_name,address=address,email=email,postal_code=postal_code,city=city
-                                           ,phone=phone,other_notes= other_notes)
+            if cart.coupon:
+                coupon=cart.coupon
+                discount=cart.coupon.discount
+                object = Checkout.objects.create(country=country, first_name=first_name, last_name=last_name,
+                                                 address=address, email=email, postal_code=postal_code, city=city
+                                                 , phone=phone, other_notes=other_notes,coupon=coupon,discount=discount)
+            else:
+                object = Checkout.objects.create(country=country, first_name=first_name, last_name=last_name,
+                                                 address=address, email=email, postal_code=postal_code, city=city
+                                                 , phone=phone, other_notes=other_notes)
 
             object.save()
 
 
             for item in cart:
-                print(item)
+
                 discount = Decimal(item['discount_price'])
 
                 if (discount == 0):
@@ -134,14 +142,13 @@ def checkout(request):
                                              quantity=item['quantity'])
                     object2.save()
             cart.clear()
-            return redirect("/")
+            return redirect("{% url 'paytm:home' %}")
     else:
         checkout1 = Checkout_form()
         return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart})
 
 @staff_member_required
 def admin_order_detail(request, product_id):
-    print("hello")
     order = get_object_or_404(Checkout,id=product_id)
     print(order)
     return render(request, 'detail.html', {'order': order})

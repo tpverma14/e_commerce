@@ -20,7 +20,7 @@ class  Oder_itemInline(admin.TabularInline):
 
 
 class CheckoutAdmin(admin.ModelAdmin):
-    readonly_fields = ("email", 'phone', 'address')
+    readonly_fields = ("email", 'phone', 'address','country','first_name','last_name','postal_code','city','other_notes','coupon','discount')
     list_display = ['id', 'first_name', 'last_name', 'email',
                     'address', 'postal_code', 'city', 'paid',
                     'created', 'updated', order_detail ]

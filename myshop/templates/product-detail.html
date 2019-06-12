@@ -150,7 +150,7 @@
                                                 </div>
 
                                             </div>
-                                        </div>
+                                        </div> {%if info.product_size %}
                                                      <script>
                                         {% for size in info.product_size%}
                                                 function clickCounter{{size.size}}() {
@@ -186,6 +186,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        {% endif %}
                                             <div class="single_color">
 
                                             <form action="{% url 'cart:cart_add' object.id %}" method="POST">

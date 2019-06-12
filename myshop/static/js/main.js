@@ -22,7 +22,7 @@
 			}
 		});
 		$('#cssmenu>ul>li.has-sub>a').append('<span class="holder"></span>');
-		(function getColor() {
+		/*(function getColor() {
 			var r, g, b;
 			var textColor = $('#cssmenu').css('color');
 			textColor = textColor.slice(4);
@@ -39,7 +39,7 @@
 				$('#cssmenu>ul>li>a').css('text-shadow', '0 1px 0 rgba(255, 255, 255, .35)');
 				$('#cssmenu>ul>li>a>span').css('border-color', 'rgba(255, 255, 255, .35)');
 			}
-		})();
+		})();*/
 
 		function rgbToHsl(r, g, b) {
 			r /= 255, g /= 255, b /= 255;

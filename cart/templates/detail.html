@@ -9,7 +9,7 @@
 {% block breadcrumbs %}
     <div class="breadcrumbs">
         <a href="{% url 'admin:index' %}">Home</a> &rsaquo;
-        &rsaquo; Detail
+
     </div>
 {% endblock %}
 {% block content %}
@@ -55,19 +55,28 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
+                    {% if order.discount != 0 %}
+                    <th>Coupon</th>
+                    <th>Discount</th>
+                    {%endif%}
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in order.items.all %}
                     <tr class='row{% cycle "1" "2" %}'>
-                        <td>{{ item.product.name }}</td>
-                        <td class="num">${{ item.price }}</td>
-                        <td class="num">{{ item.quantity }}</td>
-                        <td class="num">${{ item.get_cost }}</td>
+                        <td>{{ item.product}}</td>
+                        <td>${{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.get_cost }}</td>
+                        {% if order.discount != 0 %}
+                        <td>{{order.coupon}}</td>
+                        <td>Off-{{order.discount}}%</td>
+                        {%endif%}
+
                     </tr>
                 {% endfor %}
                 <tr class="total">
-                    <td colspan="3">Total</td>
+                    <td colspan="5">Total</td>
                     <td class="num">${{ order.get_total_cost }}</td>
                 </tr>
                 </tbody>

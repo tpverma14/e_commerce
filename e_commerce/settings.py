@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'cart',
     'coupon',
+    'paytm',
+
+
+
 
 ]
 
@@ -131,3 +135,20 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+
+HOST_URL = "http://localhost:8001"
+
+
+if DEBUG:
+    PAYTM_MERCHANT_KEY = "KjN&28_FsEEUmShz"
+    PAYTM_MERCHANT_ID = "wPnEhs24887802658211"
+    PAYTM_CALLBACK_URL = "http://localhost:8001/paytm/response/"
+    PAYTM_WEBSITE = 'WEBSTAGING'
+    '''
+    In sandbox enviornment you can use following wallet credentials to login and make payment.
+    Mobile Number : 7777777777
+    Password : Paytm12345
+    This test wallet is topped-up to a balance of 7000 Rs. every 5 minutes.
+    '''

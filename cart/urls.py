@@ -13,4 +13,5 @@ urlpatterns = [
     path('checkout',checkout,name='checkout'),
     path('admin/order/<slug:product_id>/',admin_order_detail,name='admin_order_detail'),
 
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
