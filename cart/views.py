@@ -9,7 +9,7 @@ from .forms import CartAddProductFrom ,Checkout_form
 from coupon.forms import CouponApplyForm
 from coupon.models import Coupon
 from .models import Checkout ,Oder_item
-
+from django.contrib.auth.decorators import login_required
 
 
 @require_POST
@@ -92,8 +92,9 @@ def coupon_avaliable(request):
 
 
 
-
+@login_required(login_url='/login')
 def checkout(request):
+
     cart = Cart(request)
 
 
@@ -142,7 +143,7 @@ def checkout(request):
                                              quantity=item['quantity'])
                     object2.save()
             cart.clear()
-            return redirect("{% url 'paytm:home' %}")
+            return redirect("/paytm")
     else:
         checkout1 = Checkout_form()
         return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart})

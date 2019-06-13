@@ -5,7 +5,7 @@ from django.utils import timezone
 # Create your models here.
 
 class PaytmHistory(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='rel_payment_paytm')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='rel_payment_paytm')
     ORDERID = models.CharField('ORDER ID', max_length=30)
     TXNDATE = models.DateTimeField('TXN DATE', default=timezone.now)
     TXNID = models.IntegerField('TXN ID')
@@ -23,4 +23,5 @@ class PaytmHistory(models.Model):
     class Meta:
         app_label = 'paytm'
 
-
+    def __unicode__(self):
+        return self.STATUS

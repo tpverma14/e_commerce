@@ -34,10 +34,10 @@ def payment(request):
                     'INDUSTRY_TYPE_ID':'Retail',
                     'WEBSITE': settings.PAYTM_WEBSITE,
                     'CHANNEL_ID':'WEB',
-                    'CALLBACK_URL':'http://localhost:8001/paytm/response/',
+                    'CALLBACK_URL':'http://127.0.0.1:8000/paytm/response/'
                 }
         param_dict = data_dict
-        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(data_dict, MERCHANT_KEY)
+        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(data_dict, MERCHANT_KEY).decode("utf-8")
         return render(request,"payment.html",{'paytmdict':param_dict})
     return HttpResponse("Bill Amount Could not find. ?bill_amount=10")
 
