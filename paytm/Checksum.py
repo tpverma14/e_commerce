@@ -73,7 +73,7 @@ def __get_param_string__(params):
 
 
 __pad__ = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
-__unpad__ = lambda s: s[0:-ord(s[-1])]
+__unpad__ = lambda s:str(s[0:-(s[-1])])
 
 
 def __encode__(to_encode, iv, key):

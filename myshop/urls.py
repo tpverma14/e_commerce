@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from myshop.views import home , log_in , category ,subcategory,product_detail ,sign_up,log_out,like
+from myshop.views import home , log_in , category ,subcategory,product_detail ,sign_up,log_out,like,search
 app_name = "myshop"
 
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path('login',log_in,name="login"),
     path('sign_up',sign_up,name='sign_up'),
     path('logout',log_out,name="logout"),
-    path('like',like,name="like")
+    path('like',like,name="like"),
+    path('search',search,name="search")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

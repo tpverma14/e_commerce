@@ -28,6 +28,10 @@ class Sub_Category(models.Model):
     def __str__(self):
         return self.product_name
 
+    @property
+    def get_absolute_url_sub(self):
+        return "/subcategory/%s/" % (self.slug)
+
 
 class Product(models.Model):
     product_id = models.ForeignKey(Sub_Category, related_name='product_id', on_delete=models.CASCADE)

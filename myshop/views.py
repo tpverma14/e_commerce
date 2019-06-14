@@ -194,3 +194,22 @@ def like(request):
         return redirect(post.get_absolute_url)
     else:
         return redirect("myshop:login")
+
+
+def search(request):
+    if request.method == 'POST' :
+        search_item= request.POST['search_box']
+        if search_item is not None :
+            item=Sub_Category.objects.filter(product_name__icontains=search_item)
+            if item :
+                for items in item:
+                    print(items)
+                    return redirect(items.get_absolute_url_sub)
+            else:
+                return HttpResponse('<center><h1> NOT FOUND </h1> <br> <br> <h2><a href="/"> GO TO HOME PAGE </a></h2> <br> <br> </center>')
+        else:
+            return redirect('/')
+    return redirect('/')
+
+
+#full text search in django
