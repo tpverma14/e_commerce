@@ -1,0 +1,75 @@
+{% extends 'base_layout.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+
+
+<script>
+var error1;
+error1 ="{{errors }}";
+if(error1){
+alert("Please enter valid email address ");
+}
+</script>
+<div class="col-md-6" >
+    <center>
+        <div class="blg1" style="background-color:#FFFFFF; font-family:verdana;">
+
+        <h2 style="font-family:verdana;color:#000080" ;> {{blg1.title }} </h2>
+        <b style="color:#338AFF">{{blg1.date}}</b><br>
+        <I>{{blg1.body}}</I>
+
+
+        <form action="/like_post" method="POST">
+            <p>Likes: {{blg1.like.count }}</p>
+                 {%csrf_token%}
+
+         {% if is_liked %}
+            <p>
+             <button type="submit"  name="post_id" value="{{ blg1.id}}" class="js-like-button like-btn glyphicon glyphicon-thumbs-down "> Dislike</button></p>
+         {% else %}
+
+             <button type="submit"  name="post_id" value="{{ blg1.id}}" class="js-like-button like-btn glyphicon glyphicon-thumbs-up"> Like</button></p>
+         {% endif %}
+        </form>
+
+
+
+        </div>
+
+    </center>
+</div>
+<div class="col-md-3">
+
+        <form action="{% url 'blogapp:second' blg1.slug%}  " method="POST">
+            {%csrf_token%}
+            {{comment_forms.as_p}}
+            <button class="btn btn-primary" type="submit">Submit comment</button>
+        </form>
+</div>
+
+
+   <div class="col-md-3">
+        <h1 style="background-color:#FFFFFF;font-family:verdana;color:#000080" ;" >COMMENTS</h1>
+
+        <div class="comment" style="font-size:120%;">
+
+            {% for comment in blog_comments %}
+            <br> <br>
+            <h3>{{ comment.comment }}</h3>
+
+            <h4>{{ comment.email }}</h4>
+
+            {{ comment.created }}
+            {% endfor %}
+
+        </div>
+   </div>
+    <img src="{% static 'thanking.png' %}">
+
+
+{% endblock %}

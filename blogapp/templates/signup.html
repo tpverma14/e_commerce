@@ -1,0 +1,22 @@
+{% extends 'base_layout_login.html' %}
+
+{% load static %}
+{% block content %}
+<center><header><h1><img src="{% static 'logo11.png' %}">BLOGGING</h1></header></center>
+<article >
+
+  <form action="signup" method="POST">
+    <div class="login-form" >
+      <center>
+    {%csrf_token%}
+    {{user_form.as_p}}
+    {{phone_form.as_p}}
+</center>
+    <button class="btn btn-primary"  type="submit">SUBMIT</button>
+    </div>
+</form>
+
+
+</article>
+
+{% endblock %}

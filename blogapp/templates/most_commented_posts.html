@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Most_commented_posts</title>
+</head>
+<body>
+
+
+
+    <ul id="blog_categories">
+        {% for post in most_commented %}
+
+        <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+        {% endfor %}
+
+    </ul>
+
+</body>
+</html>
+

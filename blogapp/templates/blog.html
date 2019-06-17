@@ -1,0 +1,101 @@
+{% extends 'htmlbase_layout.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block content %}
+{% load blog_tag%}
+
+
+
+
+	<div class="breadcumb_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<div class="bread_box">
+						<ul class="breadcumb">
+							<li><a href="/">home <span>|</span></a></li>
+							<li class="active"><a href="{% url 'blogapp:blog_home'%}">blog</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<section class="blog_page_area">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-8 col-sm-8 col-xs-12">
+					{% for item in blog %}
+					<div class="single_blog_in_page">
+
+						<div class="blog_img_l"><img src="{{item.blog_image.url}}" alt="" /></div>
+
+						<div class="blog_date_in_page">
+							<h2>_ <span>{{item.blog_day}}</span></h2>
+							<p>{{item.blog_month}} {{item.blog_year}}</p>
+						</div>
+						<div class="blog_text_in_page">
+							<a href="single-blog.html"><h3>{{item.blog_tittle}}</h3></a>
+							<h4>By <span>Admin</span>,   comments  <span>23</span>,   summer special</h4>
+							<p>{{item.blog_body}}</p>
+
+							<div class="read_more">
+								<a class="read_more_blog" href="{{item.id.get_absolute_url }}">Read more</a>
+							</div>
+						</div>
+					</div>
+
+					{% endfor %}
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="pagi_line"></div>
+							<div class="pagi_ul">
+								<ul id="pagination">
+									<li><a href="">Previous</a></li>
+									<li><a href="">1</a></li>
+									<li><a href="">2</a></li>
+									<li><a href="">3</a></li>
+									<li><a href="">4</a></li>
+									<li><a href="">5 ...</a></li>
+									<li><a href="">Next</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-12">
+					<div class="blog_page_sidebar">
+						<div class="blog_search">
+							<input type="text" placeholder="search post HERE..." />
+							<i class="fa fa-search"></i>
+						</div>
+
+						<div class="blog_categories">
+							<h2>POST CATEGORIES</h2>
+							<div class="multi_line"></div>
+
+							{% get_most_commented_posts %}
+
+
+						</div>
+
+						<div class="blog_recent_post">
+							<h2>RECENT POST</h2>
+							<div class="multi_line"></div>
+							<div class="single_recent_post">
+								{% get_recent_post %}
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	
+{% endblock %}

@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from cart import urls as cart_url
 from coupon import urls as coupon_url
 from paytm import urls as paytm_urls
+from blogapp import urls as blog_urls
 
 urlpatterns = [
 
@@ -28,7 +29,8 @@ urlpatterns = [
     path('',include(myshop_url)),
     path('cart/',include(cart_url)),
     path('coupon/',include(coupon_url)),
-    path('paytm/',include(paytm_urls))
+    path('paytm/',include(paytm_urls)),
+    path('blogapp/',include(blog_urls)),
 
 
 
