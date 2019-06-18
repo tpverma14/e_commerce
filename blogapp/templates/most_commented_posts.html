@@ -7,15 +7,15 @@
 <body>
 
 
-
+{% for post in most_commented %}
     <ul id="blog_categories">
-        {% for post in most_commented %}
+
 
         <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
-        {% endfor %}
+
 
     </ul>
-
+ {% endfor %}`
 </body>
 </html>
 

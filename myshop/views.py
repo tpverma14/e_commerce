@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from django.urls import reverse
+
 
 from myshop.models import Category, Sub_Category, Banner, Upload_data, Upload_images, Product, Category_banner, \
     Size_quantity, Profile
@@ -201,7 +201,7 @@ def search(request):
         search_item= request.POST['search_box']
         if search_item is not None :
             item=Sub_Category.objects.filter(product_name__icontains=search_item)
-            if item :
+            if item is not None:
                 for items in item:
                     print(items)
                     return redirect(items.get_absolute_url_sub)
@@ -210,6 +210,7 @@ def search(request):
         else:
             return redirect('/')
     return redirect('/')
+
 
 
 #full text search in django

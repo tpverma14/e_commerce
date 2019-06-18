@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Blog(models.Model):
+    name=models.CharField(max_length=50)
+    email=models.CharField(max_length=50)
     title = models.CharField(max_length=32)
     slug = models.SlugField(max_length=32,unique=True)
     body = models.TextField()
+    image = models.ImageField(upload_to='blog-images/')
     date = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='blog-images', blank=False)
     like = models.ManyToManyField(User, blank=True, related_name='post_like')
     updated=models.DateTimeField(auto_now=True , auto_now_add=False)
     timestamp=models.DateTimeField(auto_now=False , auto_now_add=True)
@@ -20,6 +21,8 @@ class Blog(models.Model):
     @property
     def get_absolute_url(self):
         return "details-/%s/" %(self.slug)
+
+
 
 
 

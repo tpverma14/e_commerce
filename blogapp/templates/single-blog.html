@@ -5,142 +5,163 @@
 {% load blog_tag%}
 
 
-	<div class="breadcumb_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="bread_box">
-						<ul class="breadcumb">
-							<li><a href="/">home <span>|</span></a></li>
-							<li><a href="{% url 'blogapp:blog_home'%}">blog <span>|</span></a></li>
+<div class="breadcumb_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="bread_box">
+					<ul class="breadcumb">
+						<li><a href="/">home <span>|</span></a></li>
+						<li><a href="{% url 'blogapp:blog_home'%}">blog <span>|</span></a></li>
 
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="blog_page_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-sm-8 col-xs-12">
+				{% for item in blog %}
+				<div class="single_blog_in_page">
+					<div class="blog_img_l"><img src="{{ item.blog_image.url }}" height="500" width="600" alt=""/></div>
+					<div class="blog_date_in_page">
+						<h2>_ <span>{{day}}</span></h2>
+						<p>{{month}} {{year}}</p>
+					</div>
+					{% if item.blog_email == email %}
+					<div class="reply"><a href="{% url 'blogapp:blog_edit' blog1.id %}"> <span>Edit</span></a></div>
+
+					{% endif %}
+
+					<div class="blog_text_in_page">
+						<h3>{{item.blog_tittle}}</h3>
+						<h4>By <span>{{item.name}}</span></h4>
+					</div>
+
+					<div class="blog_detail_in_page">
+						{{item.blog_body}}
+					</div>
+					<br>
+					<br>
+					<form action="{% url 'blogapp:like_post' %}" method="POST">
+						<p>Likes: {{blog1.like.count }}</p>
+						{%csrf_token%}
+
+						{% if is_liked %}
+						<p>
+							<button type="submit" name="post_id" value="{{blog1.id}}" class="fa fa-thumbs-down ">
+								Dislike
+							</button>
+						</p>
+						{% else %}
+
+						<button type="submit" name="post_id" value="{{blog1.id}}" class="fa fa-thumbs-o-up"> Like
+						</button>
+						</p>
+						{% endif %}
+					</form>
+
+
+
+
+					<div class="share_icons">
+						<ul id="share_icon">
+							<li><a class="fa fa-facebook" href=""></a></li>
+							<li><a class="fa fa-twitter" href=""></a></li>
+							<li><a class="fa fa-google-plus" href=""></a></li>
+							<li><a class="fa fa-linkedin" href=""></a></li>
 						</ul>
+					</div>
+				</div>
+				{% endfor %}
+
+
+				<div class="comments">
+					<h2>Comments</h2>
+					<div class="multi_line"></div>
+					<div class="single_comment">
+						{% if blog_comments %}
+						{% for comment in blog_comments %}
+
+
+						<div class="comment_text">
+							<div class="comment_name">
+								<h3>{{ comment.name }} | <span>{{ comment.created }}</span></h3><span>{{ comment.email }}</span>
+
+
+							</div>
+
+
+							<div class="reply"><a href="{% url 'blogapp:delete_comment' comment.id %}">
+								<span>Delete</span></a></div>
+							<div class="comment-detail">
+								<p>{{ comment.comment }}</p>
+							</div>
+						</div>
+						{%endfor%}
+
+						{% else %}
+						<h4> NO COMMENTS </h4>
+
+
+						{% endif %}
+					</div>
+
+				</div>
+
+
+				<div class="leave_a_reply">
+					<h2>leave a reply</h2>
+					<div class="multi_line"></div>
+					<div class="left_input">
+						<form action="{% url 'blogapp:second' blog1.slug %}" method="POST">
+							{%csrf_token%}
+							{{comment_forms.as_p}}
+							<button class="btn btn-primary" type="submit">Submit comment</button>
+						</form>
+					</div>
+
+
+				</div>
+			</div>
+
+
+			<div class="col-md-4 col-sm-4 col-xs-12">
+				<div class="blog_page_sidebar">
+					<div class="blog_search">
+						<form action="/blogapp/search_blog" method="POST">
+							{% csrf_token %}
+							<a class="fa fa-search"></a>
+							<input type="text" name="search_box" placeholder="search"/>
+						</form>
+					</div>
+
+					<div class="blog_categories">
+						<h2>POST CATEGORIES</h2>
+						<div class="multi_line"></div>
+
+						{% get_most_commented_posts %}
+
+
+					</div>
+
+					<div class="blog_recent_post">
+						<h2>RECENT POST</h2>
+						<div class="multi_line"></div>
+						<div class="single_recent_post">
+							{% get_recent_post %}
+						</div>
+
+
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<section class="blog_page_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-sm-8 col-xs-12">
-					{% for item in blog %}
-					<div class="single_blog_in_page">
-						<div class="blog_img_l"><img src="{{ item.blog_image.url }}" alt="" /></div>
-						<div class="blog_date_in_page">
-							<h2>_ <span>{{day}}</span></h2>
-							<p>{{month}} {{year}}</p>
-						</div>
-
-						<div class="blog_text_in_page">
-							<h3>{{item.blog_tittle}}</h3>
-							<h4>By <span>Admin</span>,   comments  <span>23</span>,   summer special</h4>
-						</div>
-						<div class="blog_detail_in_page">
-						{{item.blog_body}}
-						</div>
-						<br>
-						<br>
-						 <form action="{% url 'blogapp:like_post' %}" method="POST">
-            <p>Likes: {{blog1.like.count }}</p>
-                 {%csrf_token%}
-
-         {% if is_liked %}
-            <p>
-             <button type="submit"  name="post_id" value="{{blog1.id}}" class="fa fa-thumbs-down "> Dislike</button></p>
-         {% else %}
-
-             <button type="submit"  name="post_id" value="{{blog1.id}}" class="fa fa-thumbs-o-up"> Like</button></p>
-         {% endif %}
-        </form>
-						<div class="share_icons">
-							<ul id="share_icon">
-								<li><a class="fa fa-facebook" href=""></a></li>
-								<li><a class="fa fa-twitter" href=""></a></li>
-								<li><a class="fa fa-google-plus" href=""></a></li>
-								<li><a class="fa fa-linkedin" href=""></a></li>
-							</ul>
-						</div>
-					</div>
-					{% endfor %}
-
-
-					<div class="comments">
-						<h2>Comments</h2>
-						<div class="multi_line"></div>
-						<div class="single_comment">
-							{% for comment in blog_comments %}
-
-							{% if comment.created %}
-							<div class="comment_text">
-								<div class="comment_name">
-									<h3>{{ comment.name }} | <span>{{ comment.created }}</span> </h3><span>{{ comment.email }}</span>
-
-
-								</div>
-
-								<div class="reply"> | <span>Reply</span></div>
-								<div class="reply"><a href="{% url 'blogapp:delete_comment' comment.id %}"> <span>Delete</span> </a></div>
-								<div class="comment-detail">
-								<p>{{ comment.comment }}</p>
-								</div>
-							</div>
-
-					{% else %}
-							<h4> NO COMMENTS </h4>
-							{% endif %}
-							{%endfor%}
-						</div>
-
-					</div>
-
-
-					<div class="leave_a_reply">
-						<h2>leave a reply</h2>
-						<div class="multi_line"></div>
-						<div class="left_input">
-							<form action="{% url 'blogapp:second' blog1.slug %}" method="POST">
-            {%csrf_token%}
-            {{comment_forms.as_p}}
-            <button class="btn btn-primary" type="submit">Submit comment</button>
-        </form>
-						</div>
-
-
-</div>
-				</div>
-
-
-				<div class="col-md-4 col-sm-4 col-xs-12">
-					<div class="blog_page_sidebar">
-						<div class="blog_search">
-							<input type="text" placeholder="search post HERE..." />
-							<i class="fa fa-search"></i>
-						</div>
-
-						<div class="blog_categories">
-							<h2>POST CATEGORIES</h2>
-							<div class="multi_line"></div>
-
-							{% get_most_commented_posts %}
-
-
-						</div>
-
-						<div class="blog_recent_post">
-							<h2>RECENT POST</h2>
-							<div class="multi_line"></div>
-							<div class="single_recent_post">
-								{% get_recent_post %}
-							</div>
-
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</section>
+</section>
 {% endblock %}

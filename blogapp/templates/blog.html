@@ -30,15 +30,17 @@
 					{% for item in blog %}
 					<div class="single_blog_in_page">
 
-						<div class="blog_img_l"><img src="{{item.blog_image.url}}" alt="" /></div>
+						<div class="blog_img_l"><img src="{{item.blog_image.url}}"  height="300" width="400"  alt="" /></div>
 
 						<div class="blog_date_in_page">
 							<h2>_ <span>{{item.blog_day}}</span></h2>
 							<p>{{item.blog_month}} {{item.blog_year}}</p>
 						</div>
 						<div class="blog_text_in_page">
-							<a href="single-blog.html"><h3>{{item.blog_tittle}}</h3></a>
-							<h4>By <span>Admin</span>,   comments  <span>23</span>,   summer special</h4>
+							<a href="{{item.id.get_absolute_url }}"><h3>{{item.blog_tittle}}</h3></a>
+							<h4>By <span>{{item.name}}</span>
+								<br>
+								<br>
 							<p>{{item.blog_body}}</p>
 
 							<div class="read_more">
@@ -68,8 +70,11 @@
 				<div class="col-md-4 col-sm-4 col-xs-12">
 					<div class="blog_page_sidebar">
 						<div class="blog_search">
-							<input type="text" placeholder="search post HERE..." />
-							<i class="fa fa-search"></i>
+							<form action="/blogapp/search_blog" method="POST">
+                        {% csrf_token %}
+                    <a class="fa fa-search"></a>
+                    <input type="text" name="search_box" placeholder="search"/>
+                        </form>
 						</div>
 
 						<div class="blog_categories">

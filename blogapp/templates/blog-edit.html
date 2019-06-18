@@ -1,0 +1,65 @@
+{% extends 'htmlbase_layout.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block content %}
+
+
+<div class="breadcumb_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="bread_box">
+                    <ul class="breadcumb">
+                        <li><a href="/">home <span>|</span></a></li>
+                        <li><a href="{% url 'blogapp:blog_home'%}">blog <span>|</span></a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form method="POST" class="post-form" action="{% url 'blogapp:blog_update' blog.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <section class="blog_page_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-12">
+
+                    <div class="single_blog_in_page">
+                        <div class="company_name">
+                            <p>Image </p>
+                            <img src="{{ blog.image.url }}" width="300" height="200" alt=""/>
+
+                            <input type="file" name="image" id="id_image">
+
+
+                        </div>
+                        <div class="company_name">
+                            <p>title</p>
+                            <input type="text" id="id.title" name="title" value="{{blog.title}}">
+                        </div>
+                        <div class="company_name">
+                            <p>name</p>
+                            <input type="text" id="id.name" name="name" value="{{blog.name}}">
+                        </div>
+                        <div class="company_name">
+                            <p>Blog</p>
+                            {{blog.body}}
+                            <input type="text" id="id.body" name="body" value="enter new blog">
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-1 col-form-label"></label>
+                            <div class="col-sm-4">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</form>
+
+
+{% endblock%}

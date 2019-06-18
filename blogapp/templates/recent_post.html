@@ -5,23 +5,25 @@
     <title>recent_posts</title>
 </head>
 <body>
-<ul>
+
 
 {% for post in latest_post %}
-<li>
-<div class="recent_post_text">
+<ul>
+    <li>
+        <div class="recent_post_text">
 
-    <a href="{{ post.get_absolute_url }}"><h3>
-        {{ post.title }}<br>
-        </h3></a>
-    <p>{{post.date}}</p>
-</div>
-<div class="recent_post_img">
-    <a><img src="{{post.image.url}}" alt=""/></a>
-</div>
-</li>
-{% endfor %}
+            <a href="{{ post.get_absolute_url }}"><h3>
+                {{ post.title }}<br>
+            </h3></a>
+            <p>{{post.date}}</p>
+        </div>
+        <div class="recent_post_img">
+            <a><img src="{{post.image.url}}" alt=""/></a>
+        </div>
+    </li>
 </ul>
+{% endfor %}
+
 </body>
 </html>
 

@@ -1,0 +1,32 @@
+{% extends 'htmlbase_layout.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block content %}
+
+<form action="{% url 'blogapp:write_blog' %}" class="post-form" method="POST" enctype="multipart/form-data">
+	<section class="checkout_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<div class="checkout_left">
+						<h2> Write A Blog</h2>
+						<div class="dotted_line"></div>
+
+						<div class="checkout_form">
+							{%csrf_token%}
+    						{{blog.as_p}}
+
+
+						</div>
+
+                            <button class="btn btn-primary" type="submit">Publish Blog</button>
+					</div>
+				</div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+
+{% endblock%}
