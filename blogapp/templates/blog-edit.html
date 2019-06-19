@@ -19,47 +19,35 @@
         </div>
     </div>
 </div>
-<form method="POST" class="post-form" action="{% url 'blogapp:blog_update' blog.id %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <section class="blog_page_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-12">
-
-                    <div class="single_blog_in_page">
-                        <div class="company_name">
-                            <p>Image </p>
-                            <img src="{{ blog.image.url }}" width="300" height="200" alt=""/>
-
-                            <input type="file" name="image" id="id_image">
 
 
-                        </div>
-                        <div class="company_name">
-                            <p>title</p>
-                            <input type="text" id="id.title" name="title" value="{{blog.title}}">
-                        </div>
-                        <div class="company_name">
-                            <p>name</p>
-                            <input type="text" id="id.name" name="name" value="{{blog.name}}">
-                        </div>
-                        <div class="company_name">
-                            <p>Blog</p>
-                            {{blog.body}}
-                            <input type="text" id="id.body" name="body" value="enter new blog">
+<section class="checkout_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-8 col-xs-12">
+                <div class="checkout_left">
+
+                    <h2> Edit your Bog </h2>
+                    <div class="dotted_line"></div>
+                    <form action="{% url 'blogapp:blog_edit' blog.id %}" class="post-form" method="POST"
+                          enctype="multipart/form-data">
+                        <div class="checkout_form">
+                            {%csrf_token%}
+                            {{form.as_p}}
+
 
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-1 col-form-label"></label>
-                            <div class="col-sm-4">
-                                <button type="submit" class="btn btn-success">Update</button>
-                            </div>
-                        </div>
-                    </div>
+
+                        <button class="btn btn-primary" type="submit">Publish Blog</button>
+                    </form>
+                    <a href="{% url 'blogapp:delete_blog' blog.id %}">
+                        <button class="reply , btn btn-primary " type="submit">Delete Blog</button>
+                    </a>
                 </div>
             </div>
-    </section>
-</form>
+        </div>
+    </div>
+</section>
 
 
 {% endblock%}

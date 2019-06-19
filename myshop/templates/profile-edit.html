@@ -62,15 +62,16 @@
         <a href="/"><img src="{% static 'images/logo2.png' %}" alt="Site Logo"/></a>
     </div>
 
- <form action="/sign_up" method="POST">
+ <form action="{% url 'myshop:profile_edit' object %}" method="POST">
     <div class="login-form" >
       <center>
+
     {%csrf_token%}
-    {{userform.as_p}}
-    {{profileform.as_p}}
+    {{user.as_p}}
+    {{profile.as_p}}
 
     <button class="btn btn-primary"  type="submit">SUBMIT</button>
-	  </center>
+      </center>
     </div>
 </form>
 </center>

@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 @require_POST
 def cart_add(request, product_id):
 
+
     cart = Cart(request)
 
     product = get_object_or_404(Product, id=product_id)
@@ -50,6 +51,9 @@ def cart_remove(request, product_id):
 
 
 def cart_detail(request):
+    user_id = ''
+    if request.user.is_authenticated:
+        user_id = request.user.id
     cart = Cart(request)
     data1=[]
     data=[]
@@ -80,20 +84,26 @@ def cart_detail(request):
 
 
     return render(request, 'cart.html', {'cart': cart,
-                                                'coupon_apply_form': coupon_apply_form,'data1':data1,'data':data,'user':user})
+                                                'coupon_apply_form': coupon_apply_form,'data1':data1,'data':data,'user':user,'id':user_id})
 
 def coupon_avaliable(request):
+    user_id = ''
+    if request.user.is_authenticated:
+        user_id = request.user.id
     coupons = []
     coupon = Coupon.objects.filter(active=True)
     for items in coupon:
         coupons.append({'coupons': items})
 
-    return render(request,'coupon.html',{'coupons':coupons})
+    return render(request,'coupon.html',{'coupons':coupons,'id':user_id})
 
 
 
 @login_required(login_url='/login')
 def checkout(request):
+    user_id = ''
+    if request.user.is_authenticated:
+        user_id = request.user.id
 
     cart = Cart(request)
 
@@ -146,10 +156,13 @@ def checkout(request):
             return redirect("/paytm")
     else:
         checkout1 = Checkout_form()
-        return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart})
+        return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart,'id':user_id})
 
 @staff_member_required
 def admin_order_detail(request, product_id):
+    user_id = ''
+    if request.user.is_authenticated:
+        user_id = request.user.id
     order = get_object_or_404(Checkout,id=product_id)
     print(order)
-    return render(request, 'detail.html', {'order': order})
+    return render(request, 'detail.html', {'order': order,'id':user_id})

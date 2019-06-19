@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import blog_home, blog_detail,like_post, delete_comment,write_blog,search_blog,blog_edit , blog_update
+from .views import blog_home, blog_detail,like_post, delete_comment,write_blog,search_blog,blog_edit,delete_blog
 
 app_name = 'blogapp'
 
@@ -14,7 +14,9 @@ urlpatterns = [
     path('write_blog',write_blog,name='write_blog'),
     path('search_blog',search_blog,name='search_blog'),
     path('blog_edit/<slug:id>/',blog_edit,name='blog_edit'),
-    path('blog_update/<slug:id>/',blog_update,name='blog_update'),
+    path('delete_blog/<slug:id>/',delete_blog,name='delete_blog'),
+
+
 
 
 ]

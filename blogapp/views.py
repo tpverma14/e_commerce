@@ -9,6 +9,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 
 def blog_home(request):
+    id=''
+    if request.user.is_authenticated:
+        id=request.user.id
     data=[]
     blogs = Blog.objects.all().order_by('-date')
     for item in blogs:
@@ -17,10 +20,13 @@ def blog_home(request):
                      'blog_year':str(item.date)[:4],'blog_image':item.image})
 
 
-    return render(request, 'blog.html', {'blog': data})
+    return render(request, 'blog.html', {'blog': data,'id':id})
 
 @login_required(login_url='/login')
 def write_blog(request):
+    id = ''
+    if request.user.is_authenticated:
+        id = request.user.id
     email=request.user.email
     if request.method == 'POST':
         blog_form=Blog_form(request.POST, request.FILES)
@@ -36,11 +42,14 @@ def write_blog(request):
              return HttpResponse("<h1>form not valid</h1>")
     else:
         blog_show=Blog_form()
-        return render(request,'blog-show.html',{'blog':blog_show})
+        return render(request,'blog-show.html',{'blog':blog_show,'id':id})
 
 
 
 def blog_detail(request, post_slug):
+    id = ''
+    if request.user.is_authenticated:
+        id = request.user.id
 
     data1=[]
     blog = Blog.objects.get(slug=post_slug)
@@ -74,7 +83,7 @@ def blog_detail(request, post_slug):
 
                 return render(request, "single-blog.html",
                               {'blog': data1, 'blog_comments': blog_comments, "comment_forms": comment_show,
-                               'errors': comment_shows, 'is_liked':is_liked,'day':day,'month':month,'year':year ,'email':email,'blog1':blog})
+                               'errors': comment_shows, 'is_liked':is_liked,'day':day,'month':month,'year':year ,'email':email,'blog1':blog,'id':id})
         else:
             return redirect("myshop:login")
 
@@ -84,7 +93,7 @@ def blog_detail(request, post_slug):
 
     return render(request, 'single-blog.html',
                   {'blog': data1 , 'blog_comments': blog_comments, "comment_forms": comment_forms, 'is_liked':is_liked,'day':day,'month':month,'year':year,
-                   'blog1':blog,'email':email,})
+                   'blog1':blog,'email':email,'id':id})
 
 
 
@@ -124,10 +133,10 @@ def search_blog(request):
             item=Blog.objects.filter(title__icontains=search_item)
             if item :
                 for items in item:
-                    print(items)
+
                     return redirect("/blogapp/"+items.get_absolute_url)
             else:
-                return HttpResponse('<center><h1> NOT FOUND </h1> <br> <br> <h2><a href="blogapp:blog_home"> GO TO HOME PAGE </a></h2> <br> <br> </center>')
+                return redirect('blogapp:blog_home')
         else:
             return redirect('blogapp:blog_home')
     return redirect('blogapp:blog_home')
@@ -135,9 +144,27 @@ def search_blog(request):
 
 @login_required(login_url="/login")
 def blog_edit(request,id):
+    user_id= ''
+    if request.user.is_authenticated:
+        user_id = request.user.id
     object=Blog.objects.get(id=id)
-    return render(request,'blog-edit.html',{'blog':object})
 
-@login_required(login_url="/login")
-def blog_update(request,id):
-    return HttpResponse('<h1>hello</h1>')
+    if(request.method == 'POST'):
+        form=Blog_form(request.POST,request.FILES,instance=object)
+        if form.is_valid():
+            form.save()
+            return redirect('blogapp:blog_home')
+        else:
+            print(form.errors)
+    else:
+        form = Blog_form(instance=object)
+        return render(request,'blog-edit.html',{'blog':object,'form':form,'id':user_id})
+
+
+
+def delete_blog(request,id):
+
+    object=Blog.objects.get(id=id)
+
+    object.delete()
+    return redirect('blogapp:blog_home')

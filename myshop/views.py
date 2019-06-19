@@ -2,8 +2,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-
-
 from myshop.models import Category, Sub_Category, Banner, Upload_data, Upload_images, Product, Category_banner, \
     Size_quantity, Profile
 from myshop.forms import Userform, Profileform
@@ -14,6 +12,10 @@ def home(request):
     data = []
     data1 = []
     product = []
+    id=""
+    if request.user.is_authenticated:
+        id=request.user.id
+
     category = Category.objects.all().order_by('created')
     for category in category:
         data.append({'category': category, 'sub_categories': Sub_Category.objects.filter(categories__id=category.id)})
@@ -40,10 +42,13 @@ def home(request):
 
 
 
-    return render(request, "home.html", {'data': data, 'banner_data': data1, 'product': product, 'user': request.user,'feature':feature})
+    return render(request, "home.html", {'data': data, 'banner_data': data1, 'product': product, 'user': request.user,'feature':feature,'id':id})
 
 
 def category(request, post_slug):
+    id = ""
+    if request.user.is_authenticated:
+        id = request.user.id
     data = []
     category = Category.objects.all().order_by('created')
     for category in category:
@@ -62,10 +67,13 @@ def category(request, post_slug):
 
     return render(request, "category-1.html",
                   {'data': data, 'object': object, 'data1': data1, 'image_object': image_object, 'product': product,
-                   'user': request.user})
+                   'user': request.user,'id':id})
 
 
 def subcategory(request, post_slug):
+    id = ""
+    if request.user.is_authenticated:
+        id = request.user.id
     data = []
     category = Category.objects.all().order_by('created')
     for category in category:
@@ -79,10 +87,13 @@ def subcategory(request, post_slug):
                       'product_slug': info.slug, 'product_discount': info.discount,'discount_price':info.discount_price,
                       'image': Upload_images.objects.filter(image_id__id=info.id)})
 
-    return render(request, "category-2.html", {'data': data, 'data1': data1, 'object1': object1, 'user': request.user})
+    return render(request, "category-2.html", {'data': data, 'data1': data1, 'object1': object1, 'user': request.user,'id':id})
 
 
 def product_detail(request, post_slug):
+    id = ""
+    if request.user.is_authenticated:
+        id = request.user.id
     data = []
     category = Category.objects.all().order_by('created')
     for category in category:
@@ -100,15 +111,8 @@ def product_detail(request, post_slug):
         is_liked = True
 
     cart_product_form= CartAddProductFrom()
-
-
-
-
-
-
-
     return render(request, "product-detail.html",
-                  {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object })
+                  {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object ,'id':id})
 
 
 def sign_up(request):
@@ -151,7 +155,7 @@ def log_in(request):
         password = request.POST.get('password')
         if (username.isdigit()):
 
-            user = Profile.objects.get(phone=username).user
+            user = Profile.objects.get(mobile_number=username).user
 
             if user.check_password(password):
 
@@ -210,6 +214,79 @@ def search(request):
         else:
             return redirect('/')
     return redirect('/')
+
+def profile(request,id):
+    object = id
+    user_object = User.objects.get(id=id)
+
+    if user_object.id == 1 :
+        return redirect('myshop:home')
+    else:
+        profile_object = Profile.objects.get(user__id=user_object.id)
+        return render(request, "profile.html", {'user': user_object, 'profile': profile_object, 'object': object})
+
+def check_account(request,id):
+    object=id
+    user_object = User.objects.get(id=id)
+    username=user_object.username
+    if request.method == "POST":
+
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+
+            auth_login(request, user)
+            return redirect("/profile_edit/" + object)
+        else:
+            return redirect('/')
+
+
+    else:
+        return render(request, "login.html",{'username':username,'id':object})
+
+
+def profile_edit(request,id):
+    object=id
+    user_object=User.objects.get(id=id)
+    profile_object = Profile.objects.get(user__id=user_object.id)
+    if request.method == 'POST':
+        userform=Userform(request.POST,instance=user_object)
+        profileform=Profileform(request.POST,instance=profile_object)
+        if (userform.is_valid()) and (profileform.is_valid()):
+            user=userform.save(commit=False)
+            mobile_number=profileform.cleaned_data['mobile_number']
+            user.set_password(userform.cleaned_data['password'])
+            user._otherfield = mobile_number
+            user.save()
+            profileform.save()
+
+            auth_login(request,user_object )
+
+            return redirect('myshop:home')
+        else:
+            print(userform.errors,profileform.errors)
+    else:
+        userform=Userform(instance=user_object)
+        profileform=Profileform(instance=profile_object)
+        return render(request,"profile-edit.html",{'user':userform,'profile':profileform,'object':object})
+
+
+def delete_profile(request,id):
+    user_object = User.objects.get(id=id)
+    user_object.delete()
+    return redirect('myshop:home')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

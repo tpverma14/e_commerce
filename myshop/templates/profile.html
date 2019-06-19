@@ -62,17 +62,36 @@
         <a href="/"><img src="{% static 'images/logo2.png' %}" alt="Site Logo"/></a>
     </div>
 
- <form action="/sign_up" method="POST">
-    <div class="login-form" >
-      <center>
-    {%csrf_token%}
-    {{userform.as_p}}
-    {{profileform.as_p}}
 
-    <button class="btn btn-primary"  type="submit">SUBMIT</button>
-	  </center>
-    </div>
-</form>
-</center>
+
+<table class="table table-striped table-bordered table-sm">
+    <tr>
+        <th>Username</th>
+        <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+        <th>Last Name</th>
+        <td>{{ user.first_name }}</td>
+    </tr>
+    <tr>
+        <th>First Name</th>
+        <td>{{ user.last_name }}</td>
+    </tr>
+    <tr>
+        <th>Mobile number</th>
+        <td>{{ profile.mobile_number }}</td>
+    </tr>
+
+</table>
+    <a href="{% url 'myshop:check_account' object %}"><button class=" btn btn-primary " type="submit">Edit Profile</button></a>
+        <a href="{% url 'myshop:delete_profile' object %}"><button class=" btn btn-primary " type="submit">Delete Profile</button></a>
+    </center>
+
 </body>
 </html>
+
+
