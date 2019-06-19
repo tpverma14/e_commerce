@@ -48,8 +48,10 @@ def write_blog(request):
 
 def blog_detail(request, post_slug):
     id = ''
+    user_email=''
     if request.user.is_authenticated:
         id = request.user.id
+        user_email=request.user.email
 
     data1=[]
     blog = Blog.objects.get(slug=post_slug)
@@ -83,7 +85,7 @@ def blog_detail(request, post_slug):
 
                 return render(request, "single-blog.html",
                               {'blog': data1, 'blog_comments': blog_comments, "comment_forms": comment_show,
-                               'errors': comment_shows, 'is_liked':is_liked,'day':day,'month':month,'year':year ,'email':email,'blog1':blog,'id':id})
+                               'errors': comment_shows, 'is_liked':is_liked,'day':day,'month':month,'year':year ,'email':email,'blog1':blog,'id':id,'user_email':user_email})
         else:
             return redirect("myshop:login")
 
@@ -93,7 +95,7 @@ def blog_detail(request, post_slug):
 
     return render(request, 'single-blog.html',
                   {'blog': data1 , 'blog_comments': blog_comments, "comment_forms": comment_forms, 'is_liked':is_liked,'day':day,'month':month,'year':year,
-                   'blog1':blog,'email':email,'id':id})
+                   'blog1':blog,'email':email,'id':id,'user_email':user_email})
 
 
 

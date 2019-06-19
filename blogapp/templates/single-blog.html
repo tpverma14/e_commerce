@@ -95,8 +95,9 @@
 
 							</div>
 
-
+							{% if user_email == comment.email %}
 							<div class="reply"><a href="{% url 'blogapp:delete_comment' comment.id %}">
+								{% endif %}
 								<span>Delete</span></a></div>
 							<div class="comment-detail">
 								<p>{{ comment.comment }}</p>
