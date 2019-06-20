@@ -20,7 +20,7 @@ class Blog(models.Model):
 
     @property
     def get_absolute_url(self):
-        return "details-/%s/" %(self.slug)
+        return "/blogapp/details-/%s/" %(self.slug)
 
 
 

@@ -10,9 +10,8 @@
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="bread_box">
 						<ul class="breadcumb">
-							<li><a>home <span>|</span></a></li>
-							<li><a>Shop <span>|</span></a></li>
-							<li><a>Cart <span>|</span></a></li>
+							<li><a href="{% url 'myshop:home' %}">home <span>|</span></a></li>
+							<li><a href="{% url 'cart:cart_detail' %}">Cart <span>|</span></a></li>
 							<li class="active"><a >checkout</a></li>
 						</ul>
 					</div>
@@ -49,9 +48,11 @@
 								<span>Total</span>
 							</div>
 							{% for item in cart %}
+
 							<div class="c_single_item">
 								<p>{{item.product}} x {{item.quantity}}</p>
-								{% if item.discount_price == 0 %}
+
+								{% if item.discount_price == '0' %}
 								<span>${{item.price}}</span>
 								{% else %}
 								<span>${{item.discount_price}}</span>
@@ -77,14 +78,13 @@
 							<div class="c_payment">
 								<p>Select Payment Method</p>
 								<select class="selectpicker sel_state">
-									<option>Direct Bank Transfer</option>
-									<option>Wire Transfer</option>
-									<option>VISA</option>
+									<option>COD</option>
+
 								</select>
 							</div>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox"> I have Read & Accept <span>Terms & Conditions</span>
+									<input type="checkbox" required > I have Read & Accept <span>Terms & Conditions</span>
 								</label>
 							</div>
 							<input type="submit" value="Place order now"/>

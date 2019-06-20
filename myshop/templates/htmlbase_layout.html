@@ -89,13 +89,7 @@
                     {% endif %}
                     <nav class="currency alignleft">
                         <ul>
-                            <li><a href="">USD</a>
-                                <ul class="currency-dropdown">
-                                    <li><a href="">EUR</a></li>
-                                    <li><a href="">GBP</a></li>
-                                    <li><a href="">CAD</a></li>
-                                    <li><a href="">AUD</a></li>
-                                </ul>
+                            <li><a>IND</a>
                             </li>
                         </ul>
                     </nav>
@@ -165,9 +159,10 @@
 		</div>
 
         <div class="nav_right floatright">
-            <a href="{% url 'cart:cart_detail' %}"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
+
             {% with total_items=cart|length %}
                 {% if total_items > 0 %}
+            <a href="{% url 'cart:cart_detail' %}"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
             <div class="cart_menu">
                 {% for item in cart%}
         {% with product=item.product %}
@@ -207,6 +202,9 @@
                 </div>
 
             </div>
+
+            {% else %}
+            <a href="{% url 'cart:empty_cart' %}"><img src="{% static 'images/bag.png' %}" alt="Bag"/>cart</a>
             {% endif %}
             {% endwith %}
         </div>

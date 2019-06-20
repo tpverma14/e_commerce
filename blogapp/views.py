@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from blogapp.forms import CommentForm , Blog_form
 from .models import Blog, Comment
+import re
 
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -31,8 +32,10 @@ def write_blog(request):
     if request.method == 'POST':
         blog_form=Blog_form(request.POST, request.FILES)
         if blog_form.is_valid():
-            slug1=blog_form.cleaned_data['title']
-            slug3=slug1.replace(" ","-")
+            slug1=blog_form.cleaned_data['title'].lower()
+            slug2=re.sub(r'\W',"",slug1)
+            slug3=re.sub(r'\d*',"",slug2)
+
 
             Blog.objects.create(name=blog_form.cleaned_data['name'],email=email,slug=slug3,title=blog_form.cleaned_data['title'],body=blog_form.cleaned_data['body'],
                                 image=blog_form.cleaned_data['image'])
@@ -125,7 +128,7 @@ def delete_comment(request,id):
     comment=Comment.objects.get(id=id)
     post=Blog.objects.get(comment__id=id)
     comment.delete()
-    return redirect("/blogapp/"+post.get_absolute_url)
+    return redirect(post.get_absolute_url)
 
 
 def search_blog(request):
@@ -136,7 +139,7 @@ def search_blog(request):
             if item :
                 for items in item:
 
-                    return redirect("/blogapp/"+items.get_absolute_url)
+                    return redirect(items.get_absolute_url)
             else:
                 return redirect('blogapp:blog_home')
         else:

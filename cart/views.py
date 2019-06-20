@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404 ,HttpResponse
 from django.views.decorators.http import require_POST
 from myshop.models import Product, Upload_images, Category, Sub_Category, Size_quantity
 from .cart import Cart
@@ -41,7 +41,7 @@ def cart_remove(request, product_id):
     cart.remove(product)
     m=len(cart)
     if m == 0:
-        return redirect('myshop:home')
+        return redirect('cart:empty_cart')
     else:
         return redirect('cart:cart_detail')
 
@@ -101,9 +101,11 @@ def coupon_avaliable(request):
 
 @login_required(login_url='/login')
 def checkout(request):
-    user_id = ''
+    user_id =''
     if request.user.is_authenticated:
         user_id = request.user.id
+        user_email= request.user.email
+        user_id1= str(user_id)
 
     cart = Cart(request)
 
@@ -118,7 +120,7 @@ def checkout(request):
             last_name =checkout.cleaned_data['last_name']
 
             address =checkout.cleaned_data['address']
-            email =checkout.cleaned_data['email']
+
             postal_code =checkout.cleaned_data['postal_code']
             city =checkout.cleaned_data['city']
             phone =checkout.cleaned_data['phone']
@@ -127,12 +129,12 @@ def checkout(request):
                 coupon=cart.coupon
                 discount=cart.coupon.discount
                 object = Checkout.objects.create(country=country, first_name=first_name, last_name=last_name,
-                                                 address=address, email=email, postal_code=postal_code, city=city
-                                                 , phone=phone, other_notes=other_notes,coupon=coupon,discount=discount)
+                                                 address=address, email=user_email, postal_code=postal_code, city=city
+                                                 , phone=phone, other_notes=other_notes,coupon=coupon,discount=discount,paid=True)
             else:
                 object = Checkout.objects.create(country=country, first_name=first_name, last_name=last_name,
-                                                 address=address, email=email, postal_code=postal_code, city=city
-                                                 , phone=phone, other_notes=other_notes)
+                                                 address=address, email=user_email, postal_code=postal_code, city=city
+                                                 , phone=phone, other_notes=other_notes,paid=True)
 
             object.save()
 
@@ -153,7 +155,12 @@ def checkout(request):
                                              quantity=item['quantity'])
                     object2.save()
             cart.clear()
-            return redirect("/paytm")
+
+            return redirect("/cart/checkout_page")
+            # return redirect("/paytm")
+        else:
+            print(checkout.errors)
+            return HttpResponse("<h1>hello</h1>")
     else:
         checkout1 = Checkout_form()
         return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart,'id':user_id})
@@ -166,3 +173,22 @@ def admin_order_detail(request, product_id):
     order = get_object_or_404(Checkout,id=product_id)
     print(order)
     return render(request, 'detail.html', {'order': order,'id':user_id})
+
+
+def empty_cart(request):
+    user_id = ''
+    if request.user.is_authenticated:
+        user_id = request.user.id
+    return render(request,"empty_cart.html",{'id':user_id})
+
+@login_required(login_url='/login')
+def checkout_page(request):
+    if request.user.is_authenticated:
+        user_email = request.user.email
+    print(user_email)
+
+    oder=Checkout.objects.filter(email=user_email)
+    for item in oder:
+        print(item.id)
+
+    return render(request,"checkout_page.html")

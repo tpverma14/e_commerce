@@ -7,14 +7,16 @@ from myshop.models import Category, Sub_Category, Banner, Upload_data, Upload_im
 from myshop.forms import Userform, Profileform
 from django.contrib.auth import logout
 from cart.forms import CartAddProductFrom
+from blogapp.models import Blog
+
 
 def home(request):
     data = []
     data1 = []
     product = []
-    id=""
+    id = ""
     if request.user.is_authenticated:
-        id=request.user.id
+        id = request.user.id
 
     category = Category.objects.all().order_by('created')
     for category in category:
@@ -24,8 +26,10 @@ def home(request):
     feature_product = Product.objects.filter(feature_product=True)
     for object in feature_product:
         feature.append(
-            {'product_id':object.id ,'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
-             'discount_price':object.discount_price,'product_title': object.title, 'product_slug': object.slug,'image': Upload_images.objects.filter(image_id__id=object.id)})
+            {'product_id': object.id, 'product_name': object.brand_name, 'product_price': object.price,
+             'product_discount': object.discount,
+             'discount_price': object.discount_price, 'product_title': object.title, 'product_slug': object.slug,
+             'image': Upload_images.objects.filter(image_id__id=object.id)})
 
     banner_data = Banner.objects.filter(active=True)
     for banner in banner_data:
@@ -36,13 +40,20 @@ def home(request):
     for demo in sub_categoryes:
         data11 = Product.objects.filter(product_id__id=demo.id)
         for pro_data in data11:
-            product.append({'product_id':pro_data.id ,'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug,
-                            'product': pro_data,'discount_price':pro_data.discount_price,
-                            'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
+            product.append(
+                {'product_id': pro_data.id, 'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug,
+                 'product': pro_data, 'discount_price': pro_data.discount_price,
+                 'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
+    blog_item=[]
+    blog_data=Blog.objects.all().order_by('-date')
+    for item in blog_data:
 
+        blog_item.append({'id':item,'name':item.name,'blog_title':item.title,'blog_day':str(item.date)[8:10],'blog_month':str(item.date)[5:7],
+                     'blog_year':str(item.date)[:4],'blog_image':item.image})
 
-
-    return render(request, "home.html", {'data': data, 'banner_data': data1, 'product': product, 'user': request.user,'feature':feature,'id':id})
+    return render(request, "home.html",
+                  {'data': data, 'banner_data': data1, 'product': product, 'user': request.user, 'feature': feature,
+                   'id': id,'blog_item':blog_item})
 
 
 def category(request, post_slug):
@@ -61,13 +72,14 @@ def category(request, post_slug):
     for info in object1:
         product = Product.objects.filter(product_id__id=info.id)
         for info1 in product:
-            data1.append({'product_id':info1.id ,'product_name': info1.brand_name, 'product_title': info1.title, 'product_price': info1.price,
-                          'product_discount': info1.discount,'discount_price':info1.discount_price,
+            data1.append({'product_id': info1.id, 'product_name': info1.brand_name, 'product_title': info1.title,
+                          'product_price': info1.price,
+                          'product_discount': info1.discount, 'discount_price': info1.discount_price,
                           'product_slug': info1.slug, 'image': Upload_images.objects.filter(image_id__id=info1.id)})
 
     return render(request, "category-1.html",
                   {'data': data, 'object': object, 'data1': data1, 'image_object': image_object, 'product': product,
-                   'user': request.user,'id':id})
+                   'user': request.user, 'id': id})
 
 
 def subcategory(request, post_slug):
@@ -83,11 +95,14 @@ def subcategory(request, post_slug):
     object = Sub_Category.objects.get(slug=post_slug)
     object1 = Product.objects.filter(product_id__id=object.id)
     for info in object1:
-        data1.append({'product_id':info.id ,'product_name': info.brand_name, 'product_price': info.price, 'product_title': info.title,
-                      'product_slug': info.slug, 'product_discount': info.discount,'discount_price':info.discount_price,
+        data1.append({'product_id': info.id, 'product_name': info.brand_name, 'product_price': info.price,
+                      'product_title': info.title,
+                      'product_slug': info.slug, 'product_discount': info.discount,
+                      'discount_price': info.discount_price,
                       'image': Upload_images.objects.filter(image_id__id=info.id)})
 
-    return render(request, "category-2.html", {'data': data, 'data1': data1, 'object1': object1, 'user': request.user,'id':id})
+    return render(request, "category-2.html",
+                  {'data': data, 'data1': data1, 'object1': object1, 'user': request.user, 'id': id})
 
 
 def product_detail(request, post_slug):
@@ -101,8 +116,10 @@ def product_detail(request, post_slug):
 
     data1 = []
     object = Product.objects.get(slug=post_slug)
-    data1.append({'product_id':object.id ,'product_name': object.brand_name, 'product_price': object.price, 'product_discount': object.discount,
-                  'product_title': object.title, 'additional_description': object.additional_description,'discount_price':object.discount_price,
+    data1.append({'product_id': object.id, 'product_name': object.brand_name, 'product_price': object.price,
+                  'product_discount': object.discount,
+                  'product_title': object.title, 'additional_description': object.additional_description,
+                  'discount_price': object.discount_price,
                   'product_size': Size_quantity.objects.filter(product__id=object.id),
                   'product_description': object.description,
                   'image': Upload_images.objects.filter(image_id__id=object.id)})
@@ -110,9 +127,10 @@ def product_detail(request, post_slug):
     if object.like.filter(id=request.user.id).exists():
         is_liked = True
 
-    cart_product_form= CartAddProductFrom()
+    cart_product_form = CartAddProductFrom()
     return render(request, "product-detail.html",
-                  {'data': data,'cart_product_form':cart_product_form ,'data1': data1, 'user': request.user, 'is_liked': is_liked, 'object': object ,'id':id})
+                  {'data': data, 'cart_product_form': cart_product_form, 'data1': data1, 'user': request.user,
+                   'is_liked': is_liked, 'object': object, 'id': id})
 
 
 def sign_up(request):
@@ -162,7 +180,8 @@ def log_in(request):
                 return redirect("/")
             else:
 
-                return HttpResponse("<center><h1> INVALID </h1> <br> <br> <h2><a href='/login'> Try Login Again </a></h2> <br> <br> <h2><a href='/sign_up'> Go For Signup </a></h2></center> ")
+                return HttpResponse(
+                    "<center><h1> INVALID </h1> <br> <br> <h2><a href='/login'> Try Login Again </a></h2> <br> <br> <h2><a href='/sign_up'> Go For Signup </a></h2></center> ")
         else:
 
             user = authenticate(username=username, password=password)
@@ -171,7 +190,8 @@ def log_in(request):
                 auth_login(request, user)
                 return redirect("/")
             else:
-                return HttpResponse("<center><h1> INVALID </h1> <br> <br> <h2><a href='/login'> Try Login Again </a></h2> <br> <br> <h2><a href='/sign_up'> Go For Signup </a></h2></center> ")
+                return HttpResponse(
+                    "<center><h1> INVALID </h1> <br> <br> <h2><a href='/login'> Try Login Again </a></h2> <br> <br> <h2><a href='/sign_up'> Go For Signup </a></h2></center> ")
     else:
 
         return render(request, "login.html")
@@ -201,34 +221,37 @@ def like(request):
 
 
 def search(request):
-    if request.method == 'POST' :
-        search_item= request.POST['search_box']
-        if search_item is not None :
-            item=Sub_Category.objects.filter(product_name__icontains=search_item)
+    if request.method == 'POST':
+        search_item = request.POST['search_box']
+        if search_item is not None:
+            item = Sub_Category.objects.filter(product_name__icontains=search_item)
             if item is not None:
                 for items in item:
                     print(items)
                     return redirect(items.get_absolute_url_sub)
             else:
-                return HttpResponse('<center><h1> NOT FOUND </h1> <br> <br> <h2><a href="/"> GO TO HOME PAGE </a></h2> <br> <br> </center>')
+                return HttpResponse(
+                    '<center><h1> NOT FOUND </h1> <br> <br> <h2><a href="/"> GO TO HOME PAGE </a></h2> <br> <br> </center>')
         else:
             return redirect('/')
     return redirect('/')
 
-def profile(request,id):
+
+def profile(request, id):
     object = id
     user_object = User.objects.get(id=id)
 
-    if user_object.id == 1 :
+    if user_object.id == 1:
         return redirect('myshop:home')
     else:
         profile_object = Profile.objects.get(user__id=user_object.id)
         return render(request, "profile.html", {'user': user_object, 'profile': profile_object, 'object': object})
 
-def check_account(request,id):
-    object=id
+
+def check_account(request, id):
+    object = id
     user_object = User.objects.get(id=id)
-    username=user_object.username
+    username = user_object.username
     if request.method == "POST":
 
         password = request.POST.get('password')
@@ -242,41 +265,39 @@ def check_account(request,id):
 
 
     else:
-        return render(request, "login.html",{'username':username,'id':object})
+        return render(request, "login.html", {'username': username, 'id': object})
 
 
-def profile_edit(request,id):
-    object=id
-    user_object=User.objects.get(id=id)
+def profile_edit(request, id):
+    object = id
+    user_object = User.objects.get(id=id)
     profile_object = Profile.objects.get(user__id=user_object.id)
     if request.method == 'POST':
-        userform=Userform(request.POST,instance=user_object)
-        profileform=Profileform(request.POST,instance=profile_object)
+        userform = Userform(request.POST, instance=user_object)
+        profileform = Profileform(request.POST, instance=profile_object)
         if (userform.is_valid()) and (profileform.is_valid()):
-            user=userform.save(commit=False)
-            mobile_number=profileform.cleaned_data['mobile_number']
+            user = userform.save(commit=False)
+            mobile_number = profileform.cleaned_data['mobile_number']
             user.set_password(userform.cleaned_data['password'])
             user._otherfield = mobile_number
             user.save()
             profileform.save()
 
-            auth_login(request,user_object )
+            auth_login(request, user_object)
 
             return redirect('myshop:home')
         else:
-            print(userform.errors,profileform.errors)
+            print(userform.errors, profileform.errors)
     else:
-        userform=Userform(instance=user_object)
-        profileform=Profileform(instance=profile_object)
-        return render(request,"profile-edit.html",{'user':userform,'profile':profileform,'object':object})
+        userform = Userform(instance=user_object)
+        profileform = Profileform(instance=profile_object)
+        return render(request, "profile-edit.html", {'user': userform, 'profile': profileform, 'object': object})
 
 
-def delete_profile(request,id):
+def delete_profile(request, id):
     user_object = User.objects.get(id=id)
     user_object.delete()
     return redirect('myshop:home')
-
-
 
 
 

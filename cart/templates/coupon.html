@@ -68,13 +68,22 @@
     <div class="container">
         {% for item in coupons %}
 
-        <h4>{{item.coupons}}</h4>
+		<input type="text" value="{{item.coupons}}" id="myInput" readonly>
+<button onclick="myFunction()">Copy text</button>
+<script>
+function myFunction() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  document.execCommand("copy");
+  alert("Copied the Coupon code : " + copyText.value);
+}
+</script>
 
         {% endfor %}
 
     <a href="{% url 'cart:cart_detail' %}"><h5>Back to cart </h5></a>
     </div>
-
+<button type="submit" ></button>
 
 </body>
 </html>
