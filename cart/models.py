@@ -1,10 +1,11 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 
 from coupon.models import Coupon
-from myshop.models import Product
+from myshop.models import Product, Upload_images
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Checkout(models.Model):
@@ -12,7 +13,7 @@ class Checkout(models.Model):
     first_name = models.CharField(_('first_name'), max_length=50)
     last_name = models.CharField(_('last_name'), max_length=50)
     address = models.CharField(_('address'), max_length=250)
-    email = models.EmailField(_('email'),null=True )
+    email = models.ForeignKey(User,on_delete=models.CASCADE,related_name='emails')
     postal_code = models.CharField(_('postal_code'), max_length=20)
     city = models.CharField(_('city'), max_length=100)
     phone = models.IntegerField(default=0)

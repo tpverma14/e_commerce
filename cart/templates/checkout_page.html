@@ -63,73 +63,65 @@
     </div>
 <h2><i style="color:#E1509D"> ThankYou For Ordering </i></h2>
 <h3 style="color:#6C1697"> My Orders</h3>
-
+<div class="reply"><a href="{% url 'myshop:home' %}"> <span>Go back for Shopping</span></a></div>
 <section class="main_cart_area">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-9 col-sm-8 col-xs-12">
-				<div class="main_cart_left">
+			<div class="col-md-9 col-sm-8 col-xs-12" >
+				<div class="main_cart_left" >
 					<div class="cart_heading">
 						<div class="h_item1">
-							<p>order id </p>
+							<p style="color:#F67A7A">order id </p>
 						</div>
 						<div class="h_item2">
-							<p>product</p>
+                            <p style="color:#F67A7A">product / quantity  </p>
 						</div>
 						<div class="h_item3">
-							<p>qunatity</p>
+							<p style="color:#F67A7A"> price</p>
 						</div>
 						<div class="h_item4">
-							<p>order date </p>
+							<p style="color:#F67A7A">order date </p>
 						</div>
 						<div class="h_item5">
-							<p>bill pdf</p>
+							<p style="color:#F67A7A">bill pdf</p>
 						</div>
-					</div>
-					{% for item in cart%}
 
-					{% with product=item.product %}
+					</div>
+
+					{% for item in order%}
+
+
 
 					<div class="cart_item">
 						<div class="cart_item_img">
-									<a href="{% url 'myshop:product_details' product.slug %}">
-										<img src="{{item.image}}" alt="" height="20" width="80" /></a>
-
-							<p>{{product.title}}<br>{{product}}</p>
+									<p>{{item.order_id}}</p>
 						</div>
 						<div class="cart_price">
+                            {% for image in item.image %}
+                            {% if forloop.counter == 1 %}
+							<a href="{% url 'myshop:product_details' item.slug %}">
+										<img src="{{image.image.url}}" alt="" height="20" width="80" /></a>
 
-
-							{% if item.discount_price == '0' %}
-							<p>${{item.price}}</p>
-							{% else %}
-							<p>${{item.discount_price}}</p>
-							{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <p><a href="{% url 'myshop:product_details' item.slug %}">{{item.product}}</a> &nbsp; x &nbsp; {{item.quantity}}</p>
 						</div>
 						<div class="cart_size">
 							<p>
+                                {{item.price}}
 							</p>
 
 						</div>
 						<div class="cart_quantity">
-							<ul>
-								<li><form action="{% url 'cart:cart_add' product.id%}" method="POST">
-									{{item.update_quantity_form.quantity}}
-									{{item.update_quantity_form.update}}
-									<input type="submit" value="Update">
-									{% csrf_token%}
-								</form></li>
-
-								<li><a href="{% url 'cart:cart_remove' product.id %}">Remove</a></li>
-							</ul>
+							<p>{{item.date}}</p>
 						</div>
 						<div class="cart_total">
-							<p>${{item.total_price}}</p>
+							<p>pdf bill</p>
 							<span><i class="fa fa-close"></i></span>
 						</div>
 					</div>
 
-					{% endwith%}
+
 					{% endfor %}
                 </div>
             </div>

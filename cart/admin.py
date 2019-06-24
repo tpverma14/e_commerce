@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from .models import Checkout, Oder_item
+from django.utils.translation import ugettext_lazy as _
 
 
 
@@ -12,9 +13,12 @@ order_detail.allow_tags = True
 
 
 
+
+# get_image_preview.short_description = _("Picture Preview")
+
 class  Oder_itemInline(admin.TabularInline):
     model = Oder_item
-    readonly_fields = ['product','price','order','quantity']
+    readonly_fields = ['product','price','order','quantity',]
 
 
 

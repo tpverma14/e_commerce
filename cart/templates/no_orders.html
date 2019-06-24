@@ -1,0 +1,24 @@
+{% extends 'htmlbase_layout.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block content %}
+
+<section class="main_cart_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9 col-sm-8 col-xs-12">
+				<div class="main_cart_left">
+					<div class="cart_heading">
+                        <center>
+                        <h1 style="color:Red"><i> You have no order </i></h1><br>
+                        <img src="{% static '/images/no_orders.png'%}">
+                            <a href="/"><h3> start Shopping</h3></a>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

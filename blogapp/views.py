@@ -65,6 +65,7 @@ def blog_detail(request, post_slug):
     email=""
     if request.user.is_authenticated:
         email = request.user.email
+        name=request.user.username
 
 
     data1.append({'id':blog,'name':blog.name,'blog_tittle':blog.title,'blog_body':blog.body,'blog_date':blog.date,'blog_image':blog.image,'blog_email':blog.email})
@@ -78,7 +79,7 @@ def blog_detail(request, post_slug):
         if request.user.is_authenticated:
             if comment_show.is_valid():
                 Comment.objects.create(blog=blog, comment=comment_show.cleaned_data['comment'],
-                                       email=comment_show.cleaned_data['email'],name=comment_show.cleaned_data['name'])
+                                       email=email,name=name)
                 return redirect("/blogapp/details-/" + post_slug)
             else:
 

@@ -114,7 +114,7 @@
 											{% endif %}
 								{% endfor%}
 										<div class="promo_text">
-											<h5>{{ data11.categories }}</h5>
+											<a href="{% url 'myshop:product_details' data11.product_slug %}"> <h5>{{ data11.categories }}</h5></a>
 											<div class="p_line"></div>
 											<a href="{% url 'myshop:subcategory' data11.slug %}">Show More Products <i class="fa fa-caret-right"></i></a>
 										</div>
@@ -174,11 +174,12 @@
 										<a><h5>{{features.product_name}}</h5></a>
 										{% if features.discount_price ==  0 %}
 
-											<p>${{features.product_price}}</p>
+										<a href="{% url 'myshop:product_details' features.product_slug %}"><p>${{features.product_price}}</p></a>
 
 											{% else %}
 
-											<p>${{features.discount_price }}</p><span><del>${{features.product_price}}</del></span>
+											<a href="{% url 'myshop:product_details' features.product_slug %}"><p>${{features.discount_price }}</p>
+												<span><del>${{features.product_price}}</del></span></a>
 
 											{% endif %}
 									</div>
@@ -228,7 +229,7 @@
 												<p>{{item.name}}</p>
 											</div>
 												<div class="view_post">
-													<a class="" href="{{item.id.get_absolute_url }}">view post
+													<a class="" href="{{item.id.get_absolute_url}}">view post
 													<i class="fa fa-long-arrow-right"></i>
 													</a>
 												</div>

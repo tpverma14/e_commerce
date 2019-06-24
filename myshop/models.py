@@ -1,8 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
-
-
+from django.db.models import Count
 
 
 class Category(models.Model):
@@ -23,7 +22,7 @@ class Sub_Category(models.Model):
     categories = models.ForeignKey(Category, related_name='categories', on_delete=models.CASCADE)
     product_name = models.CharField(max_length=300)
     slug = models.SlugField(max_length=100)
-    stock = models.IntegerField()
+
 
     def __str__(self):
         return self.product_name
@@ -45,6 +44,7 @@ class Product(models.Model):
     feature_product=models.BooleanField()
     like = models.ManyToManyField(User, blank=True, related_name='product_like')
     available = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.brand_name
@@ -83,6 +83,19 @@ class Size_quantity(models.Model):
     product = models.ForeignKey(Product, related_name='sizes', on_delete=models.CASCADE)
     size = models.CharField(choices=CATEGORIES_CHOICES, null=True, max_length=100)
     quantity = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100000)], null=True)
+
+    @property
+    def total_stock(self):
+        length=Count(self.size)
+        for i in range(length):
+            total=0
+            total= total+self.quantity
+            return total
+
+
+
+class Total_stock(models.Model):
+    stock=models.IntegerField()
 
 
 class Banner(models.Model):

@@ -50,7 +50,7 @@
 									<div class="item">
 										<div class="item-img">
 
-											<img src={{image.image.url}} alt="" />
+											<a href="{% url 'myshop:product_details' info.product_slug %}"><img src={{image.image.url}} alt="" /></a>
 
 
 										</div>
@@ -65,11 +65,12 @@
 											<h5>{{info.product_name}}</h5>
 											{% if info.discount_price ==  0 %}
 
-											<p>${{info.product_price}}</p>
+											<a href="{% url 'myshop:product_details' info.product_slug %}"><p>${{info.product_price}}</p></a>
 
 											{% else %}
 
-											<p>${{info.discount_price }}</p><span><del>${{info.product_price}}</del></span>
+											<a href="{% url 'myshop:product_details' info.product_slug %}"><p>${{info.discount_price }}</p>
+												<span><del>${{info.product_price}}</del></span></a>
 
 											{% endif %}
 

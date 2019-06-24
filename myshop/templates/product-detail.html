@@ -92,16 +92,7 @@
                                     </div>
                                     {% endif %}
                                 </div>
-                                <div class="detail_heading_right">
-                                    <ul id="detail_star">
-                                        <li><a class="fa fa-star-o red" href=""></a></li>
-                                        <li><a class="fa fa-star-o red" href=""></a></li>
-                                        <li><a class="fa fa-star-o red" href=""></a></li>
-                                        <li><a class="fa fa-star-o" href=""></a></li>
-                                        <li><a class="fa fa-star-o" href=""></a></li>
-                                    </ul>
-                                    <p>(5 Review)</p>
-                                </div>
+
                             </div>
 
                             <div class="panel-group product_accordion" id="home-accordion-single" role="tablist"
@@ -125,32 +116,11 @@
                                 </div>
 
                                 <div class="panel panel-default product_default">
-                                    <div class="panel-heading product_accordion_heading" role="tab" id="headingThreeP">
-                                        <h4 class="panel-title product_accordion_head">
-                                            <a class="collapsed" data-toggle="collapse"
-                                               data-parent="#home-accordion-single" href="#collapseThreeP"
-                                               aria-expanded="false" aria-controls="collapseThreeP">
-                                                delivery & returns
-                                                <span class="floatright"><i class="fa fa-plus"></i></span>
-                                            </a>
-                                        </h4>
-                                    </div>
+
 
                                     <div class="panel-body product_accordion_head">
-                                        <div class="single_color sp_single_col">
-                                            <div class="color_heading"><h5>Colors</h5></div>
-                                            <div class="color_detail">
-                                                <div class="panel-body colors_cat">
-                                                    <ul id="cat_color">
-                                                        <li><a class="col-7" href=""></a></li>
-                                                        <li><a class="col-8" href=""></a></li>
-                                                        <li><a class="col-9" href=""></a></li>
-                                                        <li><a class="col-10" href=""></a></li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-                                        </div> {%if info.product_size %}
+                                        
+                                        {%if info.product_size %}
                                                      <script>
                                         {% for size in info.product_size%}
                                                 function clickCounter{{size.size}}() {

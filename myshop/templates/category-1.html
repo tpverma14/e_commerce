@@ -255,7 +255,7 @@
 										<div class="item-img">
 											{% for data11 in data.image %}
 											{% if forloop.counter == 1%}
-											<img src="{{data11.image.url}}" alt="" />
+											<a href="{% url 'myshop:product_details' data.product_slug %}"><img src="{{data11.image.url}}" alt="" /></a>
 											{% endif %}
 											{% endfor %}
 
@@ -271,11 +271,12 @@
 											<h5>{{data.product_name}}</h5>
 											{% if data.discount_price ==  0 %}
 
-											<p>${{data.product_price}}</p>
+											<a href="{% url 'myshop:product_details' data.product_slug %}"><p>${{data.product_price}}</p></a>
 
 											{% else %}
 
-											<p>${{data.discount_price }}</p><span><del>${{data.product_price}}</del></span>
+											<a href="{% url 'myshop:product_details' data.product_slug %}"><p>${{data.discount_price }}</p>
+												<span><del>${{data.product_price}}</del></span></a>
 
 											{% endif %}
 										</div>

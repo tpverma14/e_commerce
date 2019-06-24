@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+    <style type="text/css">
+            body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+
+    </style>
+</head>
+<body>
+    <h1>My Shop</h1>
+    <p>
+        Invoice number {{ order.id }} </br>
+        <span class="secondary">{{ order.date|date:"M d, Y" }}</span>
+    </p>
+
+    <h3>Bill to</h3>
+    <p>
+        {{ order_details.first_name }} {{ order_details.last_name }}<br>
+        {{ order_details.email }}<br>
+        {{ order_details.address }}<br>
+        {{ order_details.postal_code }}, {{order_details.city }}
+    </p>
+
+    <h3>Items bought</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in order %}
+            <tr class="row{% cycle '1' '2' %}">
+                <td>{{ item.product }}</td>
+                <td class="num">${{ item.price }}</td>
+                <td class="num">{{ item.quantity }}</td>
+                <td class="num">${{ item.get_cost }}</td>
+            </tr>
+        {% endfor %}
+            <tr class="total">
+                <td colspan="3">Total</td>
+                <td class="num">${{ order.get_total_cost }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <span class="{% if order.paid %}paid{% else %}pending{% endif %}">
+        {% if order.paid %}Paid{% else %}Pending payment{% endif %}
+    </span>
+</body>
+</html>
