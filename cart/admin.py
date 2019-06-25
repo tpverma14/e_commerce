@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from .models import Checkout, Oder_item
-from django.utils.translation import ugettext_lazy as _
+from .models import Checkout, Oder_item , Order_updates
+
 
 
 
@@ -18,9 +18,15 @@ order_detail.allow_tags = True
 
 class  Oder_itemInline(admin.TabularInline):
     model = Oder_item
+    extra=0
     readonly_fields = ['product','price','order','quantity',]
 
 
+class Order_updatesInlines(admin.TabularInline):
+    model = Order_updates
+    extra = 0
+    readonly_fields = ['order_id','update_desc']
+    fields = ['order_id','update_desc','active']
 
 
 class CheckoutAdmin(admin.ModelAdmin):
@@ -29,14 +35,14 @@ class CheckoutAdmin(admin.ModelAdmin):
                     'address', 'postal_code', 'city', 'paid',
                     'created', 'updated', order_detail ]
     list_filter = ['paid', 'created', 'updated']
-    inlines = [Oder_itemInline]
+    inlines = [Oder_itemInline,Order_updatesInlines]
+
+
+
+
 
 
 admin.site.register(Checkout, CheckoutAdmin)
-
-
-
-
 
 
 

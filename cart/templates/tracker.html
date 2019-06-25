@@ -1,0 +1,35 @@
+{% extends 'htmlbase_layout.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block content %}
+
+
+	<div class="breadcumb_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<div class="bread_box">
+						<ul class="breadcumb">
+							<li><a href="{% url 'myshop:home' %}">home <span>|</span></a></li>
+							<li><a href="{% url 'cart:cart_detail' %}">Cart <span>|</span></a></li>
+							<li class="active"><a >Tracker</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<center>
+
+	<div>
+	<h4><p>Track Order for Id {{order_id}}</p></h4>
+	</div>
+	<br>
+	<br>
+	{% for items in updates%}
+	<div>
+		<h5><p>{{items.updates}}</p> <span>{{ items.date|date:"M d, Y" }}</span></h5>
+	</div>
+	{% endfor%}
+</center>
+	{% endblock %}

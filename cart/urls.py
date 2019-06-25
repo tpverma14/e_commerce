@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from cart.views import cart_add,cart_detail,cart_remove , coupon_avaliable , checkout ,admin_order_detail,  empty_cart ,checkout_page , generate_Pdf
+from cart.views import cart_add,cart_detail,cart_remove , coupon_avaliable , checkout \
+    ,admin_order_detail,  empty_cart ,checkout_page , generate_Pdf ,  tracker
 
 app_name = "cart"
 
@@ -15,6 +16,7 @@ urlpatterns = [
     path("empty_cart",empty_cart,name='empty_cart'),
     path('checkout_page',checkout_page,name='checkout_page'),
     path('generate_Pdf/',generate_Pdf,name='generate_Pdf'),
+    path("tracker/<slug:id>/",tracker,name='tracker'),
 
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
