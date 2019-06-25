@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404 ,HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from myshop.models import Product, Upload_images, Category, Sub_Category, Size_quantity
 from .cart import Cart
@@ -11,7 +11,8 @@ from coupon.forms import CouponApplyForm
 from coupon.models import Coupon
 from .models import Checkout ,Oder_item
 from django.contrib.auth.decorators import login_required
-
+from .utils import render_to_pdf
+from django.http import HttpResponse
 
 @require_POST
 def cart_add(request, product_id):
@@ -105,71 +106,76 @@ def checkout(request):
     user_id =''
     if request.user.is_authenticated:
         user_id = request.user.id
-        user_email= request.user.email
-        user_id1= str(user_id)
-    email=User.objects.get(email=user_email)
+
+    object=User.objects.get(id=user_id)
+
+    email1=object.email
+
+    User_id=object.id
+
     cart = Cart(request)
     length=len(cart)
-    print(length)
-    if length == 0:
-        return render(request,"empty_cart.html",{'id':user_id})
+    if user_id == 1:
+        return  redirect("myshop:home")
     else:
-
-
-        if (request.method == 'POST'):
-
-            checkout = Checkout_form(request.POST)
-            if checkout.is_valid():
-
-                country =checkout.cleaned_data['country']
-                first_name =checkout.cleaned_data['first_name']
-                last_name =checkout.cleaned_data['last_name']
-
-                address =checkout.cleaned_data['address']
-
-                postal_code =checkout.cleaned_data['postal_code']
-                city =checkout.cleaned_data['city']
-                phone =checkout.cleaned_data['phone']
-                other_notes =checkout.cleaned_data['other_notes']
-                if cart.coupon:
-                    coupon=cart.coupon
-                    discount=cart.coupon.discount
-                    object = Checkout.objects.create(country=country, first_name=first_name, last_name=last_name,
-                                                     address=address, email=email, postal_code=postal_code, city=city
-                                                     , phone=phone, other_notes=other_notes,coupon=coupon,discount=discount,paid=True)
-                else:
-                    object = Checkout.objects.create(country=country, first_name=first_name, last_name=last_name,
-                                                     address=address, email=email, postal_code=postal_code, city=city
-                                                     , phone=phone, other_notes=other_notes,paid=True)
-
-                object.save()
-
-
-                for item in cart:
-
-                    discount = Decimal(item['discount_price'])
-
-                    if (discount == 0):
-
-
-                        object1=Oder_item.objects.create(order=object,product=item['product'],price=item['price'],quantity=item['quantity'])
-
-                        object1.save()
-                    else:
-
-                        object2=Oder_item.objects.create(order=object, product=item['product'], price=item['discount_price'],
-                                                 quantity=item['quantity'])
-                        object2.save()
-                cart.clear()
-
-                return redirect("/cart/checkout_page")
-                # return redirect("/paytm")
-            else:
-                print(checkout.errors)
-                return HttpResponse("<h1>hello</h1>")
+        if length == 0:
+            return render(request,"empty_cart.html",{'id':user_id})
         else:
-            checkout1 = Checkout_form()
-            return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart,'id':user_id})
+            if (request.method == 'POST'):
+                checkout = Checkout_form(request.POST)
+
+
+                if checkout.is_valid():
+                    country =checkout.cleaned_data['country']
+                    first_name =checkout.cleaned_data['first_name']
+                    last_name =checkout.cleaned_data['last_name']
+
+                    address =checkout.cleaned_data['address']
+
+                    postal_code =checkout.cleaned_data['postal_code']
+                    city =checkout.cleaned_data['city']
+                    phone =checkout.cleaned_data['phone']
+                    other_notes =checkout.cleaned_data['other_notes']
+                    if cart.coupon:
+                        coupon=cart.coupon
+                        discount=cart.coupon.discount
+                        object = Checkout.objects.create(checkout_id=object,country=country, first_name=first_name, last_name=last_name,
+                                                         address=address, email=email1, postal_code=postal_code, city=city
+                                                         , phone=phone, other_notes=other_notes,coupon=coupon,discount=discount,paid=True)
+                    else:
+                        object = Checkout.objects.create(checkout_id=object,country=country, first_name=first_name, last_name=last_name,
+                                                         address=address, email=email1, postal_code=postal_code, city=city
+                                                         , phone=phone, other_notes=other_notes,paid=True)
+
+                    object.save()
+
+
+
+                    for item in cart:
+
+                        discount = Decimal(item['discount_price'])
+
+                        if (discount == 0):
+
+
+                            object1=Oder_item.objects.create(order=object,product=item['product'],price=item['price'],quantity=item['quantity'])
+
+                            object1.save()
+                        else:
+
+                            object2=Oder_item.objects.create(order=object, product=item['product'], price=item['discount_price'],
+                                                     quantity=item['quantity'])
+                            object2.save()
+                    cart.clear()
+
+                    return redirect("/cart/checkout_page")
+                    # return redirect("/paytm")
+                else:
+                    print(checkout.errors)
+                    return HttpResponse("<h1>hello</h1>")
+            else:
+                checkout1 = Checkout_form()
+                return render(request, 'checkout.html',{'checkout':checkout1 , 'cart':cart,'id':user_id})
 
 @staff_member_required
 def admin_order_detail(request, product_id):
@@ -217,9 +223,10 @@ def checkout_page(request):
 
 
 
-        return render(request,"checkout_page.html",{'order':image_data,})
 
+        return render(request,"checkout_page.html",{'order':image_data})
 
+@login_required(login_url='/login')
 def generate_Pdf(request,*args,**kwargs):
 
     if request.user.is_authenticated:
@@ -229,22 +236,46 @@ def generate_Pdf(request,*args,**kwargs):
     order_data=[]
     oder = Checkout.objects.filter(email=user_email)
 
+
+
     for item in oder:
         product1=Oder_item.objects.filter(order__id=item.id)
+
+
+
+
 
         for item1 in product1:
 
 
 
             order_data.append({'order':item,'product':item1.product,
-                               'price':item1.price,'quantity':item1.quantity})
-
+                               'price':item1.price,'quantity':item1.quantity,'get_cost':item1.get_cost })
+        total_price=0
         image_data=[]
         for items in order_data:
-            image_data.append({'id':items['order'].id,'date':items['order'].created,'product':items['product'],'slug':items['product'].slug,
-                               'image':Upload_images.objects.filter(image_id__id=items['product'].id),'price':items['price'],'quantity':items['quantity']})
+            image_data.append({'product':items['product'],'slug':items['product'].slug,
+                               'image':Upload_images.objects.filter(image_id__id=items['product'].id),'price':items['price'],'quantity':items['quantity'],
+                               'get_cost':items['get_cost']})
+            order_id = items['order'].id
+            date = items['order'].created
+            total_price = items['price'] + total_price
 
 
 
 
-    return render(request,'invoice.html',{'order':image_data,'order_details':oder})
+
+    # return render(request,'invoice.html',{'order':image_data,'order_details':oder,'order_id':order_id,'date':date,'total_price':total_price})
+
+    pdf=render_to_pdf('invoice.html',{'order':image_data,'order_details':oder,'order_id':order_id,'date':date,'total_price':total_price})
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = "Invoice_%d.pdf" % (order_id)
+        content = "inline; filename='%s'" % (filename)
+        download = request.GET.get("download")
+        if download:
+            content = "attachment; filename='%s'" % (filename)
+        response['Content-Disposition'] = content
+        return response
+    else:
+        return HttpResponse("<center><h1>error in pdf</h1></center>")

@@ -88,14 +88,15 @@
 
 					</div>
 
-					{% for item in order%}
 
 
+                        {% for item in order%}
 
 					<div class="cart_item">
 						<div class="cart_item_img">
 									<p>{{item.order_id}}</p>
 						</div>
+
 						<div class="cart_price">
                             {% for image in item.image %}
                             {% if forloop.counter == 1 %}
@@ -116,7 +117,7 @@
 							<p>{{item.date}}</p>
 						</div>
 						<div class="cart_total">
-							<p>pdf bill</p>
+							<a href="{% url 'cart:generate_Pdf'  %}"><p>pdf bill</p></a>
 							<span><i class="fa fa-close"></i></span>
 						</div>
 					</div>

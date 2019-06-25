@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db.models import Count
+
 from .models import Category, Sub_Category, Product, Size_quantity, Upload_images, Banner, Upload_data, Category_banner, \
     Profile, User
 from django.utils.safestring import mark_safe
@@ -26,6 +28,10 @@ class Category_bannerAdmin(admin.TabularInline):
     extra = 1
     fields = ['category_image', get_image_preview]
     readonly_fields = [get_image_preview]
+
+
+
+
 
 
 class CategorieAdmin(admin.ModelAdmin):
@@ -68,10 +74,29 @@ class Upload_imagesInline(admin.TabularInline):
     raw_id_fields = ["image_id"]
 
 
+def total_stock1(obj):
+    sub = []
+    if obj.pk:
+        for item in obj.sizes.all():
+            print(item.size)
+            sub.append(item.size)
+            print(sub)
+            sum=0
+            leno=len(sub)
+            for i in range(leno):
+                sum=item.quantity+sum
+        return sum
+
+    return  _("(First save the data then check stock)")
+total_stock1.short_description=_("stock")
+
 class Size_quantityInline(admin.TabularInline):
     model = Size_quantity
     extra = 0
+    fields = ['size','quantity']
     raw_id_fields = ["product"]
+
+
 
 
 
@@ -79,7 +104,9 @@ class Size_quantityInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('brand_name',)}
     list_display = ['product_id', 'brand_name']
-    inlines = [Upload_imagesInline, Size_quantityInline]
+    fields = ['product_id','brand_name','slug','title','price','discount','description','additional_description','feature_product','like','available',total_stock1,]
+    readonly_fields = [total_stock1]
+    inlines = [Upload_imagesInline, Size_quantityInline,]
 
 
 

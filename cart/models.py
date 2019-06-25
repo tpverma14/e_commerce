@@ -8,12 +8,16 @@ from coupon.models import Coupon
 from myshop.models import Product, Upload_images
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
+
+
 class Checkout(models.Model):
+    checkout_id=models.ForeignKey(User,on_delete=models.CASCADE,related_name='emails')
     country =models.CharField(_('country'),max_length=100,db_index=True)
     first_name = models.CharField(_('first_name'), max_length=50)
     last_name = models.CharField(_('last_name'), max_length=50)
     address = models.CharField(_('address'), max_length=250)
-    email = models.ForeignKey(User,on_delete=models.CASCADE,related_name='emails')
+    email = models.EmailField(_('email'),max_length=100)
     postal_code = models.CharField(_('postal_code'), max_length=20)
     city = models.CharField(_('city'), max_length=100)
     phone = models.IntegerField(default=0)

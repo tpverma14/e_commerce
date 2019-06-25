@@ -58,6 +58,7 @@ def blog_detail(request, post_slug):
 
     data1=[]
     blog = Blog.objects.get(slug=post_slug)
+    print(blog)
     date=str(blog.date)
     day = date[8:10]
     year = date[:4]

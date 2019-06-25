@@ -31,6 +31,7 @@ def home(request):
              'discount_price': object.discount_price, 'product_title': object.title, 'product_slug': object.slug,
              'image': Upload_images.objects.filter(image_id__id=object.id)})
 
+
     banner_data = Banner.objects.filter(active=True)
     for banner in banner_data:
         data1.append({'banner_name': banner, 'discount': banner.discount,
@@ -44,6 +45,7 @@ def home(request):
                 {'product_id': pro_data.id, 'product_slug': pro_data.slug, 'categories': demo, 'slug': demo.slug,
                  'product': pro_data, 'discount_price': pro_data.discount_price,
                  'images': Upload_images.objects.filter(image_id__id=pro_data.id)})
+
     blog_item=[]
     blog_data=Blog.objects.all().order_by('-date')
     for item in blog_data:
@@ -123,6 +125,8 @@ def product_detail(request, post_slug):
                   'product_size': Size_quantity.objects.filter(product__id=object.id),
                   'product_description': object.description,
                   'image': Upload_images.objects.filter(image_id__id=object.id)})
+
+
     is_liked = False
     if object.like.filter(id=request.user.id).exists():
         is_liked = True
@@ -151,6 +155,7 @@ def sign_up(request):
             user.set_password(password)
             user._otherfield = mobile_number
             user.save()
+            print(user)
             mobile_number = profileform.cleaned_data['mobile_number']
             Profile.objects.create(user=user, mobile_number=mobile_number)
 

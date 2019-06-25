@@ -57,9 +57,17 @@ class Product(models.Model):
              total_price = self.price - sub_total
              return total_price
         return 0
-
-
-    
+    #
+    # sub=[]
+    #
+    # def total_stock(self):
+    #     for item in self.sizes.all():
+    #         self.sub.append(item.size)
+    #         sum=0
+    #         leno=len(self.sub)
+    #         for i in range(leno):
+    #             sum=item.quantity+sum
+    #     return sum
 
 
     @property
@@ -74,6 +82,7 @@ class Upload_images(models.Model):
 
 class Size_quantity(models.Model):
     CATEGORIES_CHOICES = (
+        ('GN','General '),
         ('XS', 'Extra Small'),
         ('S', 'Small'),
         ('M', 'Medium'),
@@ -83,19 +92,6 @@ class Size_quantity(models.Model):
     product = models.ForeignKey(Product, related_name='sizes', on_delete=models.CASCADE)
     size = models.CharField(choices=CATEGORIES_CHOICES, null=True, max_length=100)
     quantity = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(100000)], null=True)
-
-    @property
-    def total_stock(self):
-        length=Count(self.size)
-        for i in range(length):
-            total=0
-            total= total+self.quantity
-            return total
-
-
-
-class Total_stock(models.Model):
-    stock=models.IntegerField()
 
 
 class Banner(models.Model):
