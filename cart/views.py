@@ -49,7 +49,6 @@ def cart_detail(request):
     cart = Cart(request)
     data1 = []
     data = []
-
     m = len(cart)
     if m == 0:
         return redirect('myshop:home')
@@ -68,6 +67,7 @@ def cart_detail(request):
     for category in category:
         data.append({'category': category, 'sub_categories': Sub_Category.objects.filter(categories__id=category.id)})
     user = request.user
+
 
     return render(request, 'cart.html', {'cart': cart,
                                          'coupon_apply_form': coupon_apply_form, 'data1': data1, 'data': data,
@@ -92,9 +92,9 @@ def checkout(request):
     if request.user.is_authenticated:
         user_id = request.user.id
 
-    object = User.objects.get(id=user_id)
+    user_object = User.objects.get(id=user_id)
 
-    email1 = object.email
+    email1 = user_object.email
     cart = Cart(request)
     length = len(cart)
     if user_id == 1:
@@ -120,20 +120,26 @@ def checkout(request):
                     if cart.coupon:
                         coupon = cart.coupon
                         discount = cart.coupon.discount
-                        object = Checkout.objects.create(checkout_id=object, country=country, first_name=first_name,
-                                                         last_name=last_name,
-                                                         address=address, email=email1, postal_code=postal_code,
-                                                         city=city
-                                                         , phone=phone, other_notes=other_notes, coupon=coupon,
-                                                         discount=discount, paid=False)
+                        checkout_object = Checkout.objects.create(checkout_id=user_object, country=country,
+                                                                  first_name=first_name,
+                                                                  last_name=last_name,
+                                                                  address=address, email=email1,
+                                                                  postal_code=postal_code,
+                                                                  city=city
+                                                                  , phone=phone, other_notes=other_notes, coupon=coupon,
+                                                                  discount=discount, paid=False)
+                        # checkout_object.save()
                     else:
-                        object = Checkout.objects.create(checkout_id=object, country=country, first_name=first_name,
-                                                         last_name=last_name,
-                                                         address=address, email=email1, postal_code=postal_code,
-                                                         city=city
-                                                         , phone=phone, other_notes=other_notes, paid=False)
+                        checkout_object = Checkout.objects.create(checkout_id=user_object, country=country,
+                                                                  first_name=first_name,
+                                                                  last_name=last_name,
+                                                                  address=address, email=email1,
+                                                                  postal_code=postal_code,
+                                                                  city=city, phone=phone, other_notes=other_notes,
+                                                                  paid=False)
 
-                    object.save()
+                        # checkout_object.save()
+
 
                     for item in cart:
 
@@ -141,25 +147,21 @@ def checkout(request):
 
                         if (discount == 0):
 
-                            object1 = Oder_item.objects.create(order=object, product=item['product'],
+                            Oder_item.objects.create(order=checkout_object, product=item['product'],
                                                                price=item['price'], quantity=item['quantity'])
 
-                            object1.save()
+                            # object2.save()
                         else:
 
-                            object2 = Oder_item.objects.create(order=object, product=item['product'],
+                            Oder_item.objects.create(order=checkout_object, product=item['product'],
                                                                price=item['discount_price'],
                                                                quantity=item['quantity'])
-                            object2.save()
+                            # object3.save()
+
                     cart.clear()
-                    updates=Order_updates.objects.create(order_id=object,update_desc="Accepted",active=True)
-
-                    updates = Order_updates.objects.create(order_id=object, update_desc="Packed", active=False)
-
-                    updates = Order_updates.objects.create(order_id=object, update_desc="Dispatched", active=False)
-
-                    updates = Order_updates.objects.create(order_id=object, update_desc="Delievered", active=False)
-                    updates.save()
+                    updates = Order_updates.objects.create(order_id=checkout_object, update_desc="Accepted",
+                                                           active=True)
+                    # updates.save()
                     return redirect("/cart/checkout_page")
                     # return redirect("/paytm")
                 else:
@@ -263,36 +265,15 @@ def generate_Pdf(request, *args, **kwargs):
 
 
 @login_required(login_url='/login')
-def tracker(request,id):
+def tracker(request, id):
     user_id = ''
     if request.user.is_authenticated:
         user_id = request.user.id
 
-        track_order=Order_updates.objects.filter(order_id__id=id,active=True)
-        updates=[]
+        track_order = Order_updates.objects.filter(order_id__id=id, active=True)
+        updates = []
         for items in track_order:
+            updates.append({'updates': items.update_desc, 'date': items.timestamp, })
+            order_id = items.order_id
 
-            updates.append({'updates':items.update_desc,'date':items.timestamp,})
-            order_id =items.order_id
-
-
-            if items.update_desc == "Delievered":
-                object=Checkout.objects.filter(id=id)
-                object1 = User.objects.get(id=user_id)
-                for item in object:
-                    if item.paid == "False":
-                        paid_true = Checkout.objects.create(checkout_id=object1, country=item.country, first_name=item.first_name,
-                                                         last_name=item.last_name,
-                                                         address=item.address, email=item.email, postal_code=item.postal_code,
-                                                         city=item.city
-                                                         , phone=item.phone, other_notes=item.other_notes, coupon=item.coupon,
-                                                         discount=item.discount, paid=True)
-                        paid_true.save()
-
-
-
-
-
-
-
-    return render(request, 'tracker.html', {'id': user_id,'updates':updates,'order_id':order_id})
+    return render(request, 'tracker.html', {'id': user_id, 'updates': updates, 'order_id': order_id})

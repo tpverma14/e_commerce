@@ -12,10 +12,6 @@ def order_detail(obj):
 order_detail.allow_tags = True
 
 
-
-
-# get_image_preview.short_description = _("Picture Preview")
-
 class  Oder_itemInline(admin.TabularInline):
     model = Oder_item
     extra=0
@@ -25,18 +21,24 @@ class  Oder_itemInline(admin.TabularInline):
 class Order_updatesInlines(admin.TabularInline):
     model = Order_updates
     extra = 0
-    readonly_fields = ['order_id','update_desc']
-    fields = ['order_id','update_desc','active']
+    readonly_fields = ['order_id']
+    fields = ['order_id','active','update_desc']
+
+
+
+
+
 
 
 class CheckoutAdmin(admin.ModelAdmin):
+
     readonly_fields = ("email", 'phone', 'address','country','first_name','last_name','postal_code','city','other_notes','coupon','discount')
     list_display = ['id', 'first_name', 'last_name', 'email',
-                    'address', 'postal_code', 'city', 'paid',
-                    'created', 'updated', order_detail ]
-    list_filter = ['paid', 'created', 'updated']
-    inlines = [Oder_itemInline,Order_updatesInlines]
+                    'address', 'postal_code', 'city','paid',
+                    'created', 'updated', order_detail]
+    list_filter = [ 'paid','created', 'updated']
 
+    inlines = [Oder_itemInline,Order_updatesInlines]
 
 
 

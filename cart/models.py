@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
@@ -21,12 +22,29 @@ class Checkout(models.Model):
     postal_code = models.CharField(_('postal_code'), max_length=20)
     city = models.CharField(_('city'), max_length=100)
     phone = models.IntegerField(default=0)
-    other_notes = models.TextField(_('other_notes') ,max_length=500)
     paid = models.BooleanField(default=False)
+    other_notes = models.TextField(_('other_notes') ,max_length=500)
     coupon=models.ForeignKey(Coupon,related_name='orders',on_delete=models.CASCADE,null=True, blank=True)
     discount=models.IntegerField(default=0,validators=[MinValueValidator(0),MaxValueValidator(80)],null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def save(self,*args,**kwargs):
+
+
+        try:
+            Order_updates(self)
+            obj = Order_updates.objects.get(order_id=self.id)
+            print(obj.__dict__)
+            if obj.active == True and obj.update_desc == "Delivered":
+                self.paid=True
+            else:
+                self.paid=False
+        except ObjectDoesNotExist:
+            pass
+        super(Checkout, self).save(*args, **kwargs)
+
+
 
     class Meta:
         ordering = ('-created',)
@@ -39,7 +57,13 @@ class Checkout(models.Model):
         return total_cost - total_cost*(self.discount/Decimal('100'))
 
 
+
+
+
+
+
 class Oder_item(models.Model):
+
     order=models.ForeignKey(Checkout,related_name='items',on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE ,related_name='order_item')
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -53,11 +77,16 @@ class Oder_item(models.Model):
 
 
 class Order_updates(models.Model):
+    CATEGORIES_CHOICES = (
+        # ('Accepted','Accepted'),
+        ('Packed','Packed'),
+        ('Dispatched','Dispatched'),
+        ('Delivered','Delivered'),
+    )
     update_id=models.AutoField(primary_key=True)
-    order_id=models.ForeignKey(Checkout,related_name='order_id',on_delete=models.CASCADE)
-    update_desc = models.CharField(max_length=5000)
+    order_id=models.OneToOneField(Checkout,related_name='order_id',on_delete=models.CASCADE)
+    update_desc =models.CharField(choices=CATEGORIES_CHOICES, null=False,max_length=100)
     active= models.BooleanField()
-    timestamp= models.DateField(auto_now_add=True)
-
+    timestamp= models.DateTimeField(auto_now_add=True)
 
 
