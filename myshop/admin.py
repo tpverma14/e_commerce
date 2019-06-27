@@ -78,9 +78,7 @@ def total_stock1(obj):
     sub = []
     if obj.pk:
         for item in obj.sizes.all():
-            print(item.size)
             sub.append(item.size)
-            print(sub)
             sum=0
             leno=len(sub)
             for i in range(leno):

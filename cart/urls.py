@@ -15,7 +15,7 @@ urlpatterns = [
     path('admin/order/<slug:product_id>/',admin_order_detail,name='admin_order_detail'),
     path("empty_cart",empty_cart,name='empty_cart'),
     path('checkout_page',checkout_page,name='checkout_page'),
-    path('generate_Pdf/',generate_Pdf,name='generate_Pdf'),
+    path('generate_Pdf/<slug:id>/',generate_Pdf,name='generate_Pdf'),
     path("tracker/<slug:id>/",tracker,name='tracker'),
 
 

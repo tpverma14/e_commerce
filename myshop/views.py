@@ -155,7 +155,7 @@ def sign_up(request):
             user.set_password(password)
             user._otherfield = mobile_number
             user.save()
-            print(user)
+
             mobile_number = profileform.cleaned_data['mobile_number']
             Profile.objects.create(user=user, mobile_number=mobile_number)
 
@@ -232,7 +232,7 @@ def search(request):
             item = Sub_Category.objects.filter(product_name__icontains=search_item)
             if item is not None:
                 for items in item:
-                    print(items)
+
                     return redirect(items.get_absolute_url_sub)
             else:
                 return HttpResponse(

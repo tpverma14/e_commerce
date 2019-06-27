@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'coupon',
     'paytm',
     'blogapp',
+    # "django_readonly_field",
 
 
 

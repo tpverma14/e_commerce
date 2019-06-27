@@ -159,6 +159,7 @@ def checkout(request):
                             # object3.save()
 
                     cart.clear()
+
                     updates = Order_updates.objects.create(order_id=checkout_object, update_desc="Accepted",
                                                            active=True)
                     # updates.save()
@@ -178,7 +179,7 @@ def admin_order_detail(request, product_id):
     if request.user.is_authenticated:
         user_id = request.user.id
     order = get_object_or_404(Checkout, id=product_id)
-    print(order)
+
     return render(request, 'detail.html', {'order': order, 'id': user_id})
 
 
@@ -194,13 +195,16 @@ def checkout_page(request):
     if request.user.is_authenticated:
         user_id = request.user.id
         user_email = request.user.email
-    # print(user_email)
+    cart = Cart(request)
+    if cart.coupon:
+        request.session['coupon_id'] = None
+        return redirect('cart:checkout_page')
     order_data = []
     oder = Checkout.objects.filter(email=user_email)
-    print(oder, "hgjhg")
+
 
     length = len(oder)
-    print(length, "hjghjghj")
+
     if length == 0:
         return render(request, 'no_orders.html', {'id': user_id})
     else:
@@ -223,29 +227,27 @@ def checkout_page(request):
 
 
 @login_required(login_url='/login')
-def generate_Pdf(request, *args, **kwargs):
-    if request.user.is_authenticated:
-        user_email = request.user.email
-
+def generate_Pdf(request,id):
     order_data = []
-    oder = Checkout.objects.filter(email=user_email)
+    oder = Checkout.objects.get(id=id)
+    print(oder,"charlie")
 
-    for item in oder:
-        product1 = Oder_item.objects.filter(order__id=item.id)
+    product1 = Oder_item.objects.filter(order__id=oder.id)
 
-        for item1 in product1:
-            order_data.append({'order': item, 'product': item1.product,
-                               'price': item1.price, 'quantity': item1.quantity, 'get_cost': item1.get_cost})
-        total_price = 0
-        image_data = []
-        for items in order_data:
-            image_data.append({'product': items['product'], 'slug': items['product'].slug,
-                               'image': Upload_images.objects.filter(image_id__id=items['product'].id),
-                               'price': items['price'], 'quantity': items['quantity'],
-                               'get_cost': items['get_cost']})
-            order_id = items['order'].id
-            date = items['order'].created
-            total_price = items['price'] + total_price
+
+    for item1 in product1:
+        order_data.append({'order': oder, 'product': item1.product,
+                           'price': item1.price, 'quantity': item1.quantity, 'get_cost': item1.get_cost})
+    total_price = 0
+    image_data = []
+    for items in order_data:
+        image_data.append({'product': items['product'], 'slug': items['product'].slug,
+                           'image': Upload_images.objects.filter(image_id__id=items['product'].id),
+                           'price': items['price'], 'quantity': items['quantity'],
+                           'get_cost': items['get_cost'],'order_id ':items['order'].id})
+        order_id = items['order'].id
+        date = items['order'].created
+        total_price = items['price'] + total_price
 
     # return render(request,'invoice.html',{'order':image_data,'order_details':oder,'order_id':order_id,'date':date,'total_price':total_price})
 
@@ -270,7 +272,9 @@ def tracker(request, id):
     if request.user.is_authenticated:
         user_id = request.user.id
 
+
         track_order = Order_updates.objects.filter(order_id__id=id, active=True)
+
         updates = []
         for items in track_order:
             updates.append({'updates': items.update_desc, 'date': items.timestamp, })

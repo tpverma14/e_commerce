@@ -68,10 +68,12 @@
                         <td>${{ item.price }}</td>
                         <td>{{ item.quantity }}</td>
                         <td>${{ item.get_cost }}</td>
-                        {% if order.discount != 0 %}
-                        <td>{{order.coupon}}</td>
-                        <td>Off-{{order.discount}}%</td>
-                        {%endif%}
+                          {% if forloop.counter == 1 %}
+                {% if order.discount != 0 %}
+                <td>{{order.coupon}}</td>
+                <td>Off-{{order.discount}}%</td>
+                {% endif %}
+                {% endif %}
 
                     </tr>
                 {% endfor %}

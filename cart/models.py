@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 
 from coupon.models import Coupon
-from myshop.models import Product, Upload_images
+from myshop.models import Product
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -29,22 +29,27 @@ class Checkout(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    def save(self,*args,**kwargs):
+    # def save(self,*args,**kwargs):
+    #
+    #
+    #     try:
+    #         Order_updates(self)
+    #         obj = Order_updates.objects.get(order_id=self.id)
+    #         super(Order_updates, obj).save(*args, **kwargs)
+    #         print(obj.get_update(),"django")
+    #         print(obj.__dict__)
+    #         if obj.active == True and obj.update_desc == "Delivered":
+    #             self.paid=True
+    #         else:
+    #             self.paid=False
+    #     except ObjectDoesNotExist:
+    #         pass
+    #     super(Checkout, self).save(*args, **kwargs)
 
-
-        try:
-            Order_updates(self)
-            obj = Order_updates.objects.get(order_id=self.id)
-            print(obj.__dict__)
-            if obj.active == True and obj.update_desc == "Delivered":
-                self.paid=True
-            else:
-                self.paid=False
-        except ObjectDoesNotExist:
-            pass
-        super(Checkout, self).save(*args, **kwargs)
-
-
+    def mysave(self):
+        print("hello")
+        self.paid =True
+        self.save()
 
     class Meta:
         ordering = ('-created',)
@@ -62,7 +67,7 @@ class Checkout(models.Model):
 
 
 
-class Oder_item(models.Model):
+class Oder_item(models.Model    ):
 
     order=models.ForeignKey(Checkout,related_name='items',on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE ,related_name='order_item')
@@ -78,15 +83,24 @@ class Oder_item(models.Model):
 
 class Order_updates(models.Model):
     CATEGORIES_CHOICES = (
-        # ('Accepted','Accepted'),
+        ('Accepted','Accepted'),
         ('Packed','Packed'),
         ('Dispatched','Dispatched'),
         ('Delivered','Delivered'),
     )
     update_id=models.AutoField(primary_key=True)
     order_id=models.OneToOneField(Checkout,related_name='order_id',on_delete=models.CASCADE)
-    update_desc =models.CharField(choices=CATEGORIES_CHOICES, null=False,max_length=100)
+    update_desc =models.CharField(choices=CATEGORIES_CHOICES, null=False,max_length=20,default='Accepted')
     active= models.BooleanField()
     timestamp= models.DateTimeField(auto_now_add=True)
+
+    def save(self,*args,**kwargs):
+
+        data=self.update_desc
+        if data == "Delivered":
+            print("blank")
+            self.order_id.mysave()
+        super(Order_updates, self).save(*args, **kwargs)
+
 
 
