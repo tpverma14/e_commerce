@@ -119,44 +119,44 @@
 
 
                                     <div class="panel-body product_accordion_head">
-                                        
-                                        {%if info.product_size %}
-                                                     <script>
-                                        {% for size in info.product_size%}
-                                                function clickCounter{{size.size}}() {
-                                                  if (typeof(Storage) !== "undefined") {
-                                                    if (localStorage.clickcount{{size.size}}) {
-                                                      localStorage.clickcount{{size.size}} =  localStorage.setItem("{{size.size}}", "{{size.size}}");
-                                                    } else {
-                                                      localStorage.clickcount{{size.size}} = "none";
-                                                    }
-                                                    document.getElementById("result{{size.size}}").innerHTML = "You have clicked the button " + localStorage.getItem("{{size.size}}");
-                                                  } else {
-                                                    document.getElementById("result{{size.size}}").innerHTML = "Sorry, your browser does not support web storage...";
-                                                  }
-                                                }
-                                                    {%endfor%}
+<!--                                        -->
+<!--                                        {%if info.product_size %}-->
+<!--                                                     <script>-->
+<!--                                        {% for size in info.product_size%}-->
+<!--                                                function clickCounter{{size.size}}() {-->
+<!--                                                  if (typeof(Storage) !== "undefined") {-->
+<!--                                                    if (localStorage.clickcount{{size.size}}) {-->
+<!--                                                      localStorage.clickcount{{size.size}} =  localStorage.setItem("{{size.size}}", "{{size.size}}");-->
+<!--                                                    } else {-->
+<!--                                                      localStorage.clickcount{{size.size}} = "none";-->
+<!--                                                    }-->
+<!--                                                    document.getElementById("result{{size.size}}").innerHTML = "You have clicked the button " + localStorage.getItem("{{size.size}}");-->
+<!--                                                  } else {-->
+<!--                                                    document.getElementById("result{{size.size}}").innerHTML = "Sorry, your browser does not support web storage...";-->
+<!--                                                  }-->
+<!--                                                }-->
+<!--                                                    {%endfor%}-->
 
-                                                     </script>
+<!--                                                     </script>-->
 
 
-                                        <div class="single_color">
-                                            <div class="color_heading"><h5>Select size</h5></div>
-                                            <div class="color_detail">
-                                                <div class="color_size_detail">
-                                                    <ul id="color_size">
-                                                        {% for size in info.product_size%}
+<!--                                        <div class="single_color">-->
+<!--                                            <div class="color_heading"><h5>Select size</h5></div>-->
+<!--                                            <div class="color_detail">-->
+<!--                                                <div class="color_size_detail">-->
+<!--                                                    -->
+<!--                                                        {% for size in info.product_size%}-->
 
-                                                        <p>
-                                                            <button onclick="clickCounter{{size.size}}()" type="button">{{size.size}}
-                                                            </button>
-                                                        </p>
-                                                        <div id="result{{size.size}}"></div>
-                                                        {%endfor%}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endif %}
+<!--                                                        <p>-->
+<!--                                                            <button onclick="clickCounter{{size.size}}()" type="button">{{size.size}}-->
+<!--                                                            </button>-->
+<!--                                                        </p>-->
+<!--                                                        <div id="result{{size.size}}"></div>-->
+<!--                                                        {%endfor%}-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        {% endif %}-->
                                             <div class="single_color">
 
                                             <form action="{% url 'cart:cart_add' object.id %}" method="POST">

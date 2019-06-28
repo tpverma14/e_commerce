@@ -26,8 +26,8 @@ class Order_updatesInlines(admin.TabularInline):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-
-            if obj.order_id.update_desc=="Delivered":
+            print(obj.order_id.update_desc )
+            if obj.order_id.update_desc == "Delivered":
                 return self.readonly_fields + ('update_desc',)
         return self.readonly_fields
 

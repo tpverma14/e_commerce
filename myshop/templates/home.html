@@ -50,89 +50,49 @@
 		</div>
 	</div>
 
-	<!-- HOME SLIDER -->
-	<div class="call_to_action_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="call_to_action">
-						<div class="row">
-							<div class="col-md-3 col-sm-3 col-xs-12">
-								<div class="single_call_action">
-									<img src="{% static 'images/phone.png' %}" alt="" />
-									<p>01 (800) 433 633<br>
-									Daily 10.00 to 22.00</p>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12">
-								<div class="single_call_action">
-									<img src="{% static 'images/world.png' %}" alt="" />
-									<p>Fast delivery across <br>
-									India</p>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12">
-								<div class="single_call_action">
-									<img src="{% static 'images/discount.png' %}" alt="" />
-									<p>30% discount on order<br>
-									over $199</p>
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12">
-								<div class="single_call_action last_single_call">
-									<img src="{% static 'images/return.png'%}" alt="" />
-									<p>14-day return policy</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
 
-	<section class="promotion_area">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="promo_inner">
-						<div class="row">
-							{% for data11 in product %}
-							{% if forloop.counter <= 5 %}
+<!--	<section class="promotion_area">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-md-12">-->
+<!--					<div class="promo_inner">-->
+<!--						<div class="row">-->
+<!--							{% for data11 in product %}-->
+<!--							{% if forloop.counter <= 5 %}-->
 
-							<div class="col-md-6 col-sm-6 col-xs-12">
+<!--							<div class="col-md-6 col-sm-6 col-xs-12">-->
 
-								<div class="promotion_left">
-									<div class="promotion_top">
-										{% for data12 in data11.images %}
-							{% if forloop.counter == 1%}
-										<div class="images_box">
+<!--								<div class="promotion_left">-->
+<!--									<div class="promotion_top">-->
+<!--										{% for data12 in data11.images %}-->
+<!--							{% if forloop.counter == 1%}-->
+<!--										<div class="images_box">-->
 
-											<a href="{% url 'myshop:product_details' data11.product_slug %}"><img src="{{ data12.image.url }}" alt="" width="350" height="250"/></a>
-										</div>
-											{% endif %}
-								{% endfor%}
-										<div class="promo_text">
-											<a href="{% url 'myshop:product_details' data11.product_slug %}"> <h5>{{ data11.categories }}</h5></a>
-											<div class="p_line"></div>
-											<a href="{% url 'myshop:subcategory' data11.slug %}">Show More Products <i class="fa fa-caret-right"></i></a>
-										</div>
-										<div class="hover_images">
-											<a href="{% url 'myshop:product_details' data11.product_slug %}" ><img src="{{ data12.image.url  }}" alt="" /></a>
-										</div>
-									</div>
-								</div>
-							</div>
-							{% endif %}
+<!--											<a href="{% url 'myshop:product_details' data11.product_slug %}"><img src="{{ data12.image.url }}" alt="" width="350" height="250"/></a>-->
+<!--										</div>-->
+<!--											{% endif %}-->
+<!--								{% endfor%}-->
+<!--										<div class="promo_text">-->
+<!--											<a href="{% url 'myshop:product_details' data11.product_slug %}"> <h5>{{ data11.categories }}</h5></a>-->
+<!--											<div class="p_line"></div>-->
+<!--											<a href="{% url 'myshop:subcategory' data11.slug %}">Show More Products <i class="fa fa-caret-right"></i></a>-->
+<!--										</div>-->
+<!--										<div class="hover_images">-->
+<!--											<a href="{% url 'myshop:product_details' data11.product_slug %}" ><img src="{{ data12.image.url  }}" alt="" /></a>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--							{% endif %}-->
 
-								{% endfor %}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+<!--								{% endfor %}-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</section>-->
 
 
 <section class="featured_product_area">
@@ -143,21 +103,26 @@
 					<h2>Featured products</h2>
 					<div class="multi_line"></div>
 
-
-					<div class="row">
-						{% for features in feature %}
+{% for item in feature %}
 
 							{% if forloop.counter <= 5 %}
+					<div class="row">
 
 
+
+							<div>
+								<h3 style="background-color:#FA8072 ; text-transform:uppercase;color:white	">{{ item.department }}</h3>
+							</div>
+						{% for features in item.product_data %}
 
 						<div class="col-md-3 col-sm-4 col-xs-12">
 							<div class="main_cat_item">
 								<div class="item">
 									{% for image in features.image %}
 									{% if forloop.counter == 1%}
-									<div class="item-img">
-										<a href="{% url 'myshop:product_details' features.product_slug %}">	<img src="{{image.image.url}}" alt=""/></a>
+									<div class="item-img" >
+										<a href="{% url 'myshop:product_details' features.product_slug %}">
+											<img src="{{image.image.url}}" width="300px" height="300px" /></a>
 
 									</div>
 									{% endif %}
@@ -186,12 +151,11 @@
 								</div>
 							</div>
 						</div>
-
-						{% endif %}
 						{%endfor%}
-
-
 					</div>
+						{% endif %}
+
+						{%endfor%}
 				</div>
 			</div>
 		</div>

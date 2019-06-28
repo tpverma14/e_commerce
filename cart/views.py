@@ -230,11 +230,7 @@ def checkout_page(request):
 def generate_Pdf(request,id):
     order_data = []
     oder = Checkout.objects.get(id=id)
-    print(oder,"charlie")
-
     product1 = Oder_item.objects.filter(order__id=oder.id)
-
-
     for item1 in product1:
         order_data.append({'order': oder, 'product': item1.product,
                            'price': item1.price, 'quantity': item1.quantity, 'get_cost': item1.get_cost})
@@ -248,6 +244,7 @@ def generate_Pdf(request,id):
         order_id = items['order'].id
         date = items['order'].created
         total_price = items['price'] + total_price
+        print(image_data)
 
     # return render(request,'invoice.html',{'order':image_data,'order_details':oder,'order_id':order_id,'date':date,'total_price':total_price})
 
@@ -274,6 +271,7 @@ def tracker(request, id):
 
 
         track_order = Order_updates.objects.filter(order_id__id=id, active=True)
+        print(track_order)
 
         updates = []
         for items in track_order:

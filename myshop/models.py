@@ -21,6 +21,7 @@ class Category_banner(models.Model):
 class Sub_Category(models.Model):
     categories = models.ForeignKey(Category, related_name='categories', on_delete=models.CASCADE)
     product_name = models.CharField(max_length=300)
+    featured_department=models.BooleanField()
     slug = models.SlugField(max_length=100)
 
 

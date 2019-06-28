@@ -95,7 +95,6 @@ class Order_updates(models.Model):
     timestamp= models.DateTimeField(auto_now_add=True)
 
     def save(self,*args,**kwargs):
-
         data=self.update_desc
         if data == "Delivered":
             print("blank")

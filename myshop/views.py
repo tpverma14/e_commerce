@@ -22,14 +22,24 @@ def home(request):
     for category in category:
         data.append({'category': category, 'sub_categories': Sub_Category.objects.filter(categories__id=category.id)})
         # data[category] = Sub_Categorie.objects.filter(categories__id=category.id)
-    feature = []
-    feature_product = Product.objects.filter(feature_product=True)
-    for object in feature_product:
-        feature.append(
-            {'product_id': object.id, 'product_name': object.brand_name, 'product_price': object.price,
-             'product_discount': object.discount,
-             'discount_price': object.discount_price, 'product_title': object.title, 'product_slug': object.slug,
-             'image': Upload_images.objects.filter(image_id__id=object.id)})
+
+    feature_items = []
+
+    featured_object=Sub_Category.objects.filter(featured_department=True)
+    for feature_data in featured_object:
+
+        feature_product = Product.objects.filter(product_id__id=feature_data.id , feature_product=True)
+
+        feature = []
+        for object in feature_product:
+            feature.append(
+                {'product_id': object.id, 'product_name': object.brand_name, 'product_price': object.price,
+                 'product_discount': object.discount,
+                 'discount_price': object.discount_price, 'product_title': object.title, 'product_slug': object.slug,
+                 'image': Upload_images.objects.filter(image_id__id=object.id)})
+        feature_items.append({'department':feature_data.product_name,'product_data':feature})
+
+
 
 
     banner_data = Banner.objects.filter(active=True)
@@ -54,7 +64,7 @@ def home(request):
                      'blog_year':str(item.date)[:4],'blog_image':item.image})
 
     return render(request, "home.html",
-                  {'data': data, 'banner_data': data1, 'product': product, 'user': request.user, 'feature': feature,
+                  {'data': data, 'banner_data': data1, 'product': product, 'user': request.user, 'feature': feature_items,
                    'id': id,'blog_item':blog_item})
 
 
